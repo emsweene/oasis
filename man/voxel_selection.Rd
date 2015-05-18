@@ -15,10 +15,17 @@ voxel_selection(flair, brain_mask, cutoff)
 passed to \code{\link{quantile}}}
 }
 \value{
-Object of class nifti
+Returns an object of class nifti
 }
 \description{
-This function does the voxel selection
+This function creates a binary mask for the voxel selection
 procedure for OASIS.
+}
+\examples{
+\dontrun{
+library(oro.nifti)
+flair <- readNIfTI('path/to/flair', reorient = FALSE)
+brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE)
+voxel_selection_mask <- oasis_preproc(flair, brain_mask, cutoff = .85) }
 }
 

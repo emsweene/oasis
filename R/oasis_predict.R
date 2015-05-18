@@ -1,5 +1,5 @@
 #' @title OASIS Prediction
-#' @description
+#' @description This function creates the OASIS probability maps. 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @param flair flair volume of class nifti
 #' @param t1 flair volume of class nifti
@@ -11,7 +11,7 @@
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @export 
-oasis_predict <- (flair, ##flair volume of class nifti
+oasis_predict <- function(flair, ##flair volume of class nifti
                   t1, ##t1 volume of class nifti
                   t2, ##t2 volume of class nifti
                   pd, ##pd volume of class nifti
@@ -31,44 +31,43 @@ oasis_predict <- (flair, ##flair volume of class nifti
   if(brain_mask == NULL){
     brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
     brain_mask <- brain_mask > 0
-    oasis_study$brain_mask <- datatyper(brain_mask, trybyte= TRUE)
-  } else {
-    oasis_study$brain_mask <- brain_mask
-  }
+    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  } 
 
   ## the image normalization 
   if(normalize == TRUE){
-    oasis_study[1:4] <- lapply(oasis_study[1:4], function (x) zscore_img(x,  oasis_study$brain_mask, margin = NULL))  
+    oasis_study <- lapply(oasis_study, function (x) zscore_img(x,  oasis_study$brain_mask, margin = NULL))  
     }
 
   ## smooth the images using fslsmooth from the fslr package 
-    oasis_smooth_10 <- lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 10, mask = brain_mask))
-    oasis_smooth_20 <- lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask))
-  
-  do.call(rbind.data.frame,oasis_study[1:4], oasis_smooth_10,  oasis_smooth_20)
-  ## create a dataframe to store the oasis covariates 
-  oasis.data <-  data.frame(matrix(NA, length(c(flair)), 12, 
-                                   dimnames=list(c(), c(modalities,  
-                                                        paste0(modalities, "_10"), 
-                                                        paste0(modalities, "_20")))))
-
-  
-  ## make the model predictions 
-  predictions <- 
-  predictions <- niftiarr(flair,
+  oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask)))
+  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask)))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = flair,
-                                brain_mask = mask, 
+                                brain_mask = brain_mask, 
                                 cutoff = .85)
-  predictions <- niftiarr(predictions, predictions[top_voxels != 1] <- 0)
+  
+  ## create a dataframe to make oasis predictions on    
+  oasis_study <- lapply(oasis_study, function(x) x[top_voxels == 1])
+  oasis_dataframe <- do.call(cbind.data.frame, oasis_study)
+
+  names <- c("FLAIR", "T1", "T2", "PD")
+  colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"))
+  
+  ## make the model predictions 
+  data(oasis_model)
+  predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
+  predictions_nifti <- niftiarr(flair, 0) 
+  predictions_nifti[top_voxels == 1] <- predictions
+
   
   ##smooth the probability map 
   sigma.smooth<-diag(3,3)
   k.size<- 5
-  prob_map<-niftiarr(predictions, GaussSmoothArray(predictions,sigma=sigma.smooth,
+  prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
                                                    ksize=k.size,mask=brain_mask))
   
-  return(predictions)
+  return(predictions_nifti)
   
 }

@@ -8,12 +8,16 @@
 #' @param t1 flair volume of class nifti
 #' @param t2 flair volume of class nifti
 #' @param pd flair volume of class nifti
-#' @return List og objects of class nifti 
+#' @return Returns a list of objects of class nifti: the preprocessed flair, t1, t2, and pd as well as a brain mask.  
 #' @examples \dontrun{
-#' ## when you write the dontrun, it doesn't run but will
-#' ## include it in the Rd file (documentation)
-#' }
+#' library(oro.nifti)
+#' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
+#' t1 <- readNIfTI('path/to/t1', reorient = FALSE) 
+#' t2 <- readNIfTI('path/to/t2', reorient = FALSE) 
+#' pd <- readNIfTI('path/to/pd', reorient = FALSE)
+#' oasis_preprocessed_data <- oasis_preproc(flair, t1, t2, pd) }
 #' @import AnalyzeFMRI 
+#' @export 
 oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti
                           t2, # t2 volume of class nifti
