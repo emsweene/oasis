@@ -11,7 +11,6 @@
 #' ## include it in the Rd file (documentation)
 #' }
 #' @export
- 
 voxel_selection <- function(flair, ##the flair volume
                             brain_mask, ## a brain mask for the flair 
                             cutoff ## the percentile cutoff for the thresholding 
