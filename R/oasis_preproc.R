@@ -16,7 +16,6 @@
 #' t2 <- readNIfTI('path/to/t2', reorient = FALSE) 
 #' pd <- readNIfTI('path/to/pd', reorient = FALSE)
 #' oasis_preprocessed_data <- oasis_preproc(flair, t1, t2, pd) }
-#' @import AnalyzeFMRI 
 #' @export 
 oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti

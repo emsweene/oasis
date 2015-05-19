@@ -1,6 +1,5 @@
 #' @title OASIS Prediction
 #' @description This function creates the OASIS probability maps. 
-#' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @param flair flair volume of class nifti
 #' @param t1 flair volume of class nifti
 #' @param t2 flair volume of class nifti
@@ -10,6 +9,8 @@
 #' @param normalize option to perform z-score normalization of the image, should be TRUE unless you train model
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
+#' @importFrom AnalyzeFMRI GaussSmoothArray
+#' @import fslr
 #' @export 
 oasis_predict <- function(flair, ##flair volume of class nifti
                   t1, ##t1 volume of class nifti
@@ -62,7 +63,6 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"))
   
   ## make the model predictions 
-  data(oasis_model)
   predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
   predictions_nifti <- niftiarr(flair, 0) 
   predictions_nifti[top_voxels == TRUE] <- predictions
