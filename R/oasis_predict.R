@@ -33,12 +33,17 @@ oasis_predict <- function(flair, ##flair volume of class nifti
     brain_mask <- brain_mask > 0
     brain_mask <- datatyper(brain_mask, trybyte= TRUE)
   } 
-
+  
+  ##adjust brain mask for OASIS 
+  brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
+  cutpoint <- quantile(flair[brain_mask == 1], .15)
+  brain_mask[flair <= cutpoint] <- 0 
+  
   ## the image normalization 
   if(normalize == TRUE){
     oasis_study <- lapply(oasis_study, function (x) zscore_img(x,  oasis_study$brain_mask, margin = NULL))  
     }
-
+  
   ## smooth the images using fslsmooth from the fslr package 
   oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask)))
   oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask)))
