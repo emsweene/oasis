@@ -42,7 +42,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ## the image normalization 
   if(normalize == TRUE){
-    oasis_study <- lapply(oasis_study, function (x) zscore_img(x,  oasis_study$brain_mask, margin = NULL))  
+    oasis_study <- lapply(oasis_study, function (x) zscore_img(x, brain_mask, margin = NULL))  
     }
   
   ## smooth the images using fslsmooth from the fslr package 
@@ -65,7 +65,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   data(oasis_model)
   predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
   predictions_nifti <- niftiarr(flair, 0) 
-  predictions_nifti[top_voxels == 1] <- predictions
+  predictions_nifti[top_voxels == TRUE] <- predictions
 
   
   ##smooth the probability map 
