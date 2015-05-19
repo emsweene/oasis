@@ -5,7 +5,7 @@
 #' @param t1 flair volume of class nifti
 #' @param t2 flair volume of class nifti
 #' @param pd flair volume of class nifti
-#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET
+#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr
 #' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS
 #' @param normalize option to perform z-score normalization of the image, should be TRUE unless you train model
 #' using an alternative normalization 
