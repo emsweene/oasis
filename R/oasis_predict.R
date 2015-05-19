@@ -28,11 +28,12 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
  
   ## create a brain mask  
-# if(brain_mask == NULL){
-#    brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
-#    brain_mask <- brain_mask > 0
-#    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
-#  } 
+  if(is.null(brain_mask) == TRUE){
+    brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
+    brain_mask <- brain_mask > 0
+    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  } 
+  
   
   ##adjust brain mask for OASIS 
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
@@ -76,3 +77,5 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   return(predictions_nifti)
   
 }
+
+
