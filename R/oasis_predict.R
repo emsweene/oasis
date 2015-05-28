@@ -16,10 +16,10 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   t1, ##t1 volume of class nifti
                   t2, ##t2 volume of class nifti
                   pd, ##pd volume of class nifti
-                  brain_mask, ##brain mask of class nifti
+                  brain_mask = NULL, ##brain mask of class nifti
                   preproc = FALSE, ##option to preprocess the data
                   normalize = TRUE, ##option to normalize 
-                  model = default_model ##OASIS model of class glm
+                  model = NULL ##an OASIS model of class glm
   ) {
   oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   
@@ -63,7 +63,13 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"))
   
   ## make the model predictions 
+  if(is.null(model) == TRUE){
   predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
+  } else { 
+  predictions <- predict(model, newdata = oasis_dataframe, type = 'response')    
+  }
+  
+  ##put the predictions onto the brain 
   predictions_nifti <- niftiarr(flair, 0) 
   predictions_nifti[top_voxels == TRUE] <- predictions
 
@@ -73,7 +79,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   k.size<- 5
   prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
                                                    ksize=k.size,mask=brain_mask))
-  
+  ##return the probability map 
   return(predictions_nifti)
   
 }

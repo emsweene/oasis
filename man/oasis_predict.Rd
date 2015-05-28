@@ -4,8 +4,8 @@
 \alias{oasis_predict}
 \title{OASIS Prediction}
 \usage{
-oasis_predict(flair, t1, t2, pd, brain_mask, preproc = FALSE,
-  normalize = TRUE, model = default_model)
+oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
+  normalize = TRUE, model = NULL)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
