@@ -2,6 +2,8 @@
 
 export(oasis_predict)
 export(oasis_preproc)
+export(oasis_train_vectors)
+export(oasis_training)
 export(voxel_selection)
 import(fslr)
 import(oro.nifti)

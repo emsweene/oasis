@@ -21,20 +21,25 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   normalize = TRUE, ##option to normalize 
                   model = NULL ##an OASIS model of class glm
   ) {
-  oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-  
-  ## the image preproceesing 
+
+  ##image preproceesing 
   if(preproc == TRUE){
-    images <- oasis_preproc(oasis_study$flair, oasis_study$t1, oasis_study$t2, oasis_study$pd)
+    ## the image preproceesing 
+    images <- oasis_preproc(flair, t1, t2, pd)
+    oasis_study <- list(flair = images[[1]], t1 = t1, t2 = images[[2]], pd = images[[3]])
+    brain_mask <- images[[4]]
+  } else{ 
+    if(is.null(brain_mask) == TRUE){
+      ## create a brain mask if not supplied
+      brain_mask <- fslbet(infile = t1, retimg = TRUE)
+      brain_mask <- brain_mask > 0
+      brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+    } 
+    else{
+      ## no preprocessing  
+      oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
+    }
   }
- 
-  ## create a brain mask  
-  if(is.null(brain_mask) == TRUE){
-    brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
-    brain_mask <- brain_mask > 0
-    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
-  } 
-  
   
   ##adjust brain mask for OASIS 
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)

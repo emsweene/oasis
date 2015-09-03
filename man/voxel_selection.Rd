@@ -16,6 +16,8 @@ passed to \code{\link{quantile}}}
 }
 \value{
 Returns an object of class nifti
+
+predictions_nifti oasis predictions in a volume of class nifti
 }
 \description{
 This function creates a binary mask for the voxel selection

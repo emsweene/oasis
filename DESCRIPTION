@@ -1,8 +1,8 @@
-Package: oasisr
+Package: oasis
 Type: Package
 Title: OASIS Lesion Segmentation 
 Version: 1.0
-Date: 2015-05-12
+Date: 2015-09-02
 Author: Elizabeth Sweeney, John Muschelli
 Maintainer: Elizabeth Sweeney <emsweene@jhsph.edu>
 Description: yo

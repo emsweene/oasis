@@ -12,6 +12,7 @@
 #' brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE) 
 #' voxel_selection_mask <- oasis_preproc(flair, brain_mask, cutoff = .85) }
 #' @import oro.nifti
+#' @return predictions_nifti oasis predictions in a volume of class nifti
 #' @export
 voxel_selection <- function(flair, ##the flair volume
                             brain_mask, ## a brain mask for the flair 
