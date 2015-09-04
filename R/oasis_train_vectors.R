@@ -6,6 +6,7 @@
 #' @param t1 t1 volume of class nifti
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
+#' @param gold_standard gold standard lesion segmentation mask of class nifti
 #' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr
 #' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
 #' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
@@ -38,6 +39,8 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
   t2 <- correct_image_dim(t2)
   pd <- correct_image_dim(pd)
   
+  
+  ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
     images <- oasis_preproc(flair, t1, t2, pd)
@@ -45,7 +48,7 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
     brain_mask <- images[[4]]
   } else{ 
     if(is.null(brain_mask) == TRUE){
-      ## create a brain mask  
+      ## create a brain mask if not supplied
       brain_mask <- fslbet(infile = t1, retimg = TRUE)
       brain_mask <- brain_mask > 0
       brain_mask <- datatyper(brain_mask, trybyte= TRUE)
@@ -56,14 +59,11 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
     }
   }
   
-
-
   ##adjust brain mask for OASIS 
-  brain_mask <- correct_image_dim(brain_mask) 
+  brain_mask <- correct_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
-  cutpoint <- quantile(flair[brain_mask == 1], .15)
-  brain_mask[flair <= cutpoint] <- 0 
-  
+  cutpoint <- quantile(oasis_study[[1]][brain_mask == 1], .15)
+  brain_mask[oasis_study[[1]] <= cutpoint] <- 0 
 
   ## the image normalization 
   if(normalize == TRUE){
