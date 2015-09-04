@@ -17,6 +17,8 @@ oasis_train_vectors(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
 
 \item{pd}{pd volume of class nifti}
 
+\item{gold_standard}{gold standard lesion segmentation mask of class nifti}
+
 \item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr}
 
 \item{preproc}{is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
