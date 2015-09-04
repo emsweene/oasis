@@ -55,7 +55,7 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
 
 
   ##adjust brain mask for OASIS 
-  brain_mask <- check_image_dim(brain_mask) 
+  brain_mask <- correct_image_dim(brain_mask) 
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
   cutpoint <- quantile(flair[brain_mask == 1], .15)
   brain_mask[flair <= cutpoint] <- 0 

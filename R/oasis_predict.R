@@ -9,6 +9,7 @@
 #' @param normalize option to perform z-score normalization of the image, should be TRUE unless you train model
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
+#' @param return_preproc  
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
 #' @return Reutrns a volume of class nifti containing the OASIS probability for each voxel. 
@@ -26,7 +27,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   brain_mask = NULL, ##brain mask of class nifti
                   preproc = FALSE, ##option to preprocess the data
                   normalize = TRUE, ##option to normalize 
-                  model = NULL ##an OASIS model of class glm
+                  model = NULL, ##an OASIS model of class glm
+                  return_preproc = FALSE ##option to return the preprocessed data
   ) {
   ##correct image dimmension
   flair <- correct_image_dim(flair)
@@ -55,7 +57,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ##adjust brain mask for OASIS 
-  brain_mask <- check_image_dim(brain_mask)
+  brain_mask <- correct_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
   cutpoint <- quantile(flair[brain_mask == 1], .15)
   brain_mask[flair <= cutpoint] <- 0 
@@ -98,9 +100,13 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   k.size<- 5
   prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
                                                    ksize=k.size,mask=brain_mask))
-  ##return the probability map 
-  return(predictions_nifti)
+  ##return the data
   
+  if(return_preproc == TRUE){
+  return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
+  } else{
+  return(predictions_nifti)
+  }
 }
 
 
