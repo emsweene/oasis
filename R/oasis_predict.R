@@ -61,8 +61,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
-  cutpoint <- quantile(flair[brain_mask == 1], .15)
-  brain_mask[flair <= cutpoint] <- 0 
+  cutpoint <- quantile(oasis_study[[1]][brain_mask == 1], .15)
+  brain_mask[oasis_study[[1]] <= cutpoint] <- 0 
   
   ## the image normalization 
   if(normalize == TRUE){
