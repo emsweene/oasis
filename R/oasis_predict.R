@@ -5,14 +5,16 @@
 #' @param t2 flair volume of class nifti
 #' @param pd flair volume of class nifti
 #' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET
-#' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS
-#' @param normalize option to perform z-score normalization of the image, should be TRUE unless you train model
+#' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
+#' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
-#' @param return_preproc  
+#' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
-#' @return Reutrns a volume of class nifti containing the OASIS probability for each voxel. 
+#' @return If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel. 
+#' Otherwise, the function returns a list of volumes: the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
+#' the PD volume, the brain mask for the subject, and the voxel selection mask. 
 #' @examples \dontrun{
 #' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
 #' t2 <- readNIfTI('path/to/t2', reorient = FALSE) 

@@ -7,14 +7,17 @@
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
 #' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr
-#' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS using FSL through fslr
-#' @param normalize option to perform z-score normalization of the image, should be TRUE unless you are training model
-#' using data alternative normalization 
+#' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
+#' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
+#' using an alternative normalization 
 #' @param slices vector of desired slices to train on, if NULL then train over the entire brain mask 
 #' @param orientation string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"
+#' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
-#' @return Returns a dataframe for use with the oasis_training function. 
+#' @return If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
+#' Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
+#' the PD volume, the brain mask for the subject, and the voxel selection mask. 
 #' @export 
 oasis_train_vectors <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
@@ -25,7 +28,8 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
                           preproc = FALSE, ##option to preprocess the data
                           normalize = TRUE, ##option to normalize 
                           slices = NULL, #slice vector
-                          orientation = "axial" #slice direction
+                          orientation = "axial", #slice direction
+                          return_preproc = FALSE 
                           ) 
   { 
   ##correct image dimmension
@@ -100,7 +104,11 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
   names <- c("FLAIR", "T1", "T2", "PD")
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"),  "GoldStandard")
   
-  return(oasis_dataframe)
+  if(return_preproc == TRUE){
+    return(list(oasis_dataframe = oasis_dataframe, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
+  } else{
+    return(oasis_dataframe)
+  }
   
 }
 

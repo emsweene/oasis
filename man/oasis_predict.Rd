@@ -18,17 +18,19 @@ oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
 
 \item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET}
 
-\item{preproc}{calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
+\item{preproc}{is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
 
-\item{normalize}{option to perform z-score normalization of the image, should be TRUE unless you train model
+\item{normalize}{is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
 using an alternative normalization}
 
 \item{model}{an object of class glm used to make the OASIS predictions}
 
-\item{return_preproc}{}
+\item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
 }
 \value{
-Reutrns a volume of class nifti containing the OASIS probability for each voxel.
+If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel.
+Otherwise, the function returns a list of volumes: the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
+the PD volume, the brain mask for the subject, and the voxel selection mask.
 }
 \description{
 This function creates the OASIS probability map from a single MRI study with FLAIR, T1, T2, and PD volumes.

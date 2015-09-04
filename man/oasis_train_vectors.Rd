@@ -6,7 +6,7 @@
 \usage{
 oasis_train_vectors(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
   preproc = FALSE, normalize = TRUE, slices = NULL,
-  orientation = "axial")
+  orientation = "axial", return_preproc = FALSE)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
@@ -19,17 +19,21 @@ oasis_train_vectors(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
 
 \item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr}
 
-\item{preproc}{calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS using FSL through fslr}
+\item{preproc}{is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
 
-\item{normalize}{option to perform z-score normalization of the image, should be TRUE unless you are training model
-using data alternative normalization}
+\item{normalize}{is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
+using an alternative normalization}
 
 \item{slices}{vector of desired slices to train on, if NULL then train over the entire brain mask}
 
 \item{orientation}{string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"}
+
+\item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
 }
 \value{
-Returns a dataframe for use with the oasis_training function.
+If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function.
+Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
+the PD volume, the brain mask for the subject, and the voxel selection mask.
 }
 \description{
 This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes
