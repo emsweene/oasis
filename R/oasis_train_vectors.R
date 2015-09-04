@@ -1,16 +1,19 @@
 #' @title OASIS Training Data Frame
-#' @description This function creates the training vectors from a single study 
+#' @description This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes 
+#' as well as binary masks of lesions. The function can create a brian mask for the data (or the user can supply a brain mask), 
+#' can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.  
 #' @param flair flair volume of class nifti
-#' @param t1 flair volume of class nifti
-#' @param t2 flair volume of class nifti
-#' @param pd flair volume of class nifti
-#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET
-#' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS
+#' @param t1 t1 volume of class nifti
+#' @param t2 t2 volume of class nifti
+#' @param pd pd volume of class nifti
+#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr
+#' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS using FSL through fslr
 #' @param normalize option to perform z-score normalization of the image, should be TRUE unless you are training model
 #' using data alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
+#' @return oasis_dataframe dataframe for use with the oasis_training function 
 #' @export 
 oasis_train_vectors <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti

@@ -11,22 +11,27 @@ oasis_train_vectors(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
 \arguments{
 \item{flair}{flair volume of class nifti}
 
-\item{t1}{flair volume of class nifti}
+\item{t1}{t1 volume of class nifti}
 
-\item{t2}{flair volume of class nifti}
+\item{t2}{t2 volume of class nifti}
 
-\item{pd}{flair volume of class nifti}
+\item{pd}{pd volume of class nifti}
 
-\item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET}
+\item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr}
 
-\item{preproc}{calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
+\item{preproc}{calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS using FSL through fslr}
 
 \item{normalize}{option to perform z-score normalization of the image, should be TRUE unless you are training model
 using data alternative normalization}
 
 \item{model}{an object of class glm used to make the OASIS predictions}
 }
+\value{
+oasis_dataframe dataframe for use with the oasis_training function
+}
 \description{
-This function creates the training vectors from a single study
+This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes
+as well as binary masks of lesions. The function can create a brian mask for the data (or the user can supply a brain mask),
+can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.
 }
 
