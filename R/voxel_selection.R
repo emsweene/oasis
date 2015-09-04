@@ -5,7 +5,7 @@
 #' @param brain_mask brain mask of class nifti
 #' @param cutoff the percentile cutoff for the thresholding, 
 #' passed to \code{\link{quantile}}
-#' @return Returns the voxel slection mask as an object of class nifti 
+#' @return Returns the voxel slection mask as an object of class nifti.  
 #' @examples \dontrun{
 #' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
 #' brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE) 

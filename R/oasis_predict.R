@@ -28,7 +28,13 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   normalize = TRUE, ##option to normalize 
                   model = NULL ##an OASIS model of class glm
   ) {
-
+  ##correct image dimmension
+  flair <- correct_image_dim(flair)
+  t1 <- correct_image_dim(t1)
+  t2 <- correct_image_dim(t2)
+  pd <- correct_image_dim(pd)
+  
+  
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
@@ -49,6 +55,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ##adjust brain mask for OASIS 
+  brain_mask <- check_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
   cutpoint <- quantile(flair[brain_mask == 1], .15)
   brain_mask[flair <= cutpoint] <- 0 

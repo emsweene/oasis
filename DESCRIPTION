@@ -13,3 +13,4 @@ Depends:
 Imports:
   AnalyzeFMRI
 License: GPL-2
+LazyData: yes

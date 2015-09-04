@@ -10,10 +10,11 @@
 #' @param preproc calls the oasis_preproc function and performs the necessary preprocessing steps for OASIS using FSL through fslr
 #' @param normalize option to perform z-score normalization of the image, should be TRUE unless you are training model
 #' using data alternative normalization 
-#' @param model an object of class glm used to make the OASIS predictions 
+#' @param slices vector of desired slices to train on, if NULL then train over the entire brain mask 
+#' @param orientation string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
-#' @return oasis_dataframe dataframe for use with the oasis_training function 
+#' @return Returns a dataframe for use with the oasis_training function. 
 #' @export 
 oasis_train_vectors <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
@@ -27,6 +28,11 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
                           orientation = "axial" #slice direction
                           ) 
   { 
+  ##correct image dimmension
+  flair <- correct_image_dim(flair)
+  t1 <- correct_image_dim(t1)
+  t2 <- correct_image_dim(t2)
+  pd <- correct_image_dim(pd)
   
   if(preproc == TRUE){
     ## the image preproceesing 
@@ -49,6 +55,7 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
 
 
   ##adjust brain mask for OASIS 
+  brain_mask <- check_image_dim(brain_mask) 
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
   cutpoint <- quantile(flair[brain_mask == 1], .15)
   brain_mask[flair <= cutpoint] <- 0 

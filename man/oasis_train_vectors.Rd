@@ -24,10 +24,12 @@ oasis_train_vectors(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
 \item{normalize}{option to perform z-score normalization of the image, should be TRUE unless you are training model
 using data alternative normalization}
 
-\item{model}{an object of class glm used to make the OASIS predictions}
+\item{slices}{vector of desired slices to train on, if NULL then train over the entire brain mask}
+
+\item{orientation}{string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"}
 }
 \value{
-oasis_dataframe dataframe for use with the oasis_training function
+Returns a dataframe for use with the oasis_training function.
 }
 \description{
 This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes
