@@ -25,7 +25,18 @@ using an alternative normalization}
 
 \item{model}{an object of class glm used to make the OASIS predictions}
 }
+\value{
+Reutrns a volume of class nifti containing the OASIS probability for each voxel.
+}
 \description{
-This function creates the OASIS probability maps.
+This function creates the OASIS probability map from a single MRI study with FLAIR, T1, T2, and PD volumes.
+}
+\examples{
+\dontrun{
+flair <- readNIfTI('path/to/flair', reorient = FALSE)
+t2 <- readNIfTI('path/to/t2', reorient = FALSE)
+t1 <- readNIfTI('path/to/t1', reorient = FALSE)
+pd <- readNIfTI('path/to/pd', reorient = FALSE)
+oasis_map <- oasis_predict(flair = flair, t1 = t1, t2 = t2, pd = pd) }
 }
 

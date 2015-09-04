@@ -9,7 +9,14 @@ oasis_training(oasis_dataframe)
 \arguments{
 \item{oasis_dataframe}{dataframe from the oasis_train_vectors function}
 }
+\value{
+Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict.
+}
 \description{
 This function trains the OASIS model from a data frame produced by the function oasis_train_vectors
+}
+\examples{
+\dontrun{
+my_oasis_model <- oasis_training(oasis_dataframe)  }
 }
 

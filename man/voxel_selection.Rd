@@ -9,15 +9,13 @@ voxel_selection(flair, brain_mask, cutoff)
 \arguments{
 \item{flair}{flair volume of class nifti}
 
-\item{brain_mask}{a brain mask for the flair}
+\item{brain_mask}{brain mask of class nifti}
 
 \item{cutoff}{the percentile cutoff for the thresholding,
 passed to \code{\link{quantile}}}
 }
 \value{
-Returns an object of class nifti
-
-predictions_nifti oasis predictions in a volume of class nifti
+Returns the voxel slection mask as an object of class nifti
 }
 \description{
 This function creates a binary mask for the voxel selection
@@ -25,7 +23,6 @@ procedure for OASIS.
 }
 \examples{
 \dontrun{
-library(oro.nifti)
 flair <- readNIfTI('path/to/flair', reorient = FALSE)
 brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE)
 voxel_selection_mask <- oasis_preproc(flair, brain_mask, cutoff = .85) }

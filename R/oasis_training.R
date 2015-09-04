@@ -4,6 +4,10 @@
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
 #' @export 
+#' @return Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict. 
+#' @examples \dontrun{
+#' my_oasis_model <- oasis_training(oasis_dataframe)  }
+#' @import oro.nifti
 oasis_training <- function(oasis_dataframe ##dataframe of OASIS data
 ){
   

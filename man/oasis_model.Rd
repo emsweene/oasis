@@ -6,6 +6,6 @@
 \title{OASIS glm Object}
 \format{A glm object}
 \description{
-Its like it sounds -- dummy!
+A glm object containing the OASIS model from the OASIS paper.
 }
 

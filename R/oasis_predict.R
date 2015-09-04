@@ -1,5 +1,5 @@
 #' @title OASIS Prediction
-#' @description This function creates the OASIS probability maps. 
+#' @description This function creates the OASIS probability map from a single MRI study with FLAIR, T1, T2, and PD volumes. 
 #' @param flair flair volume of class nifti
 #' @param t1 flair volume of class nifti
 #' @param t2 flair volume of class nifti
@@ -11,6 +11,13 @@
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
+#' @return Reutrns a volume of class nifti containing the OASIS probability for each voxel. 
+#' @examples \dontrun{
+#' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
+#' t2 <- readNIfTI('path/to/t2', reorient = FALSE) 
+#' t1 <- readNIfTI('path/to/t1', reorient = FALSE) 
+#' pd <- readNIfTI('path/to/pd', reorient = FALSE) 
+#' oasis_map <- oasis_predict(flair = flair, t1 = t1, t2 = t2, pd = pd) }
 #' @export 
 oasis_predict <- function(flair, ##flair volume of class nifti
                   t1, ##t1 volume of class nifti
