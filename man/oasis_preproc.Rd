@@ -9,21 +9,20 @@ oasis_preproc(flair, t1, t2, pd)
 \arguments{
 \item{flair}{flair volume of class nifti}
 
-\item{t1}{flair volume of class nifti}
+\item{t1}{t1 volume of class nifti}
 
-\item{t2}{flair volume of class nifti}
+\item{t2}{t2 volume of class nifti}
 
-\item{pd}{flair volume of class nifti}
+\item{pd}{pd volume of class nifti}
 }
 \value{
-Returns a list of objects of class nifti: the preprocessed flair, t1, t2, and pd as well as a brain mask.
+Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.
 }
 \description{
-This function does the required preprocessing for OASIS for the flair, t2,
-t1, and pd volumes using fsl through fslr.  The preprcoessing steps are (1) inhomogenity
-correct using fsl fast, (2) rigid registration using fsl flirt, (3) creating
-a brain mask using fsl BET.  The function returns a list with the inhomogenity corrected
-volumes and the brain mask.
+This function does the required preprocessing for OASIS for the FLAIR, T2,
+T1, and PD volumes using fsl through fslr.  The preprcoessing steps are (1) inhomogenity
+correct using fsl fast and  (2) rigid registration using fsl flirt to the T1 space.  The function returns
+a list with the inhomogenity corrected volumes.
 }
 \examples{
 \dontrun{

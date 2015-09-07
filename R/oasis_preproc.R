@@ -1,14 +1,13 @@
 #' @title OASIS Image Preprocessing 
-#' @description This function does the required preprocessing for OASIS for the flair, t2, 
-#' t1, and pd volumes using fsl through fslr.  The preprcoessing steps are (1) inhomogenity
-#' correct using fsl fast, (2) rigid registration using fsl flirt, (3) creating
-#' a brain mask using fsl BET.  The function returns a list with the inhomogenity corrected
-#' volumes and the brain mask. 
+#' @description This function does the required preprocessing for OASIS for the FLAIR, T2, 
+#' T1, and PD volumes using fsl through fslr.  The preprcoessing steps are (1) inhomogenity
+#' correct using fsl fast and  (2) rigid registration using fsl flirt to the T1 space.  The function returns 
+#' a list with the inhomogenity corrected volumes. 
 #' @param flair flair volume of class nifti
-#' @param t1 flair volume of class nifti
-#' @param t2 flair volume of class nifti
-#' @param pd flair volume of class nifti
-#' @return Returns a list of objects of class nifti: the preprocessed flair, t1, t2, and pd as well as a brain mask.  
+#' @param t1 t1 volume of class nifti
+#' @param t2 t2 volume of class nifti
+#' @param pd pd volume of class nifti
+#' @return Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.  
 #' @examples \dontrun{
 #' library(oro.nifti)
 #' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
@@ -33,12 +32,7 @@ oasis_preproc <- function(flair, #flair volume of class nifti
                                                              reffile =   study$t1, 
                                                              retimg = TRUE,  dof = 6))
   
-  ##create a brain mask using fsl BET 
-  brain_mask <- fslbet(infile = t1, retimg = TRUE)
-  brain_mask <- brain_mask > 0
-  study_inhomo_reg$brain_mask <- datatyper(brain_mask, trybyte= TRUE)
-  
   ##return a list with the preprocessed images and a brain mask 
-  return(study_inhomo_reg)
+  return(flair = study_inhomo_reg[[1]], t1 = study_inhomo[[2]],  study_inhomo_reg[[2]], study_inhomo_reg[[3]]  )
 
 }

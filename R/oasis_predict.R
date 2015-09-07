@@ -1,15 +1,15 @@
 #' @title OASIS Prediction
 #' @description This function creates the OASIS probability map from a single MRI study with FLAIR, T1, T2, and PD volumes. 
 #' @param flair flair volume of class nifti
-#' @param t1 flair volume of class nifti
-#' @param t2 flair volume of class nifti
-#' @param pd flair volume of class nifti
+#' @param t1 t1 volume of class nifti
+#' @param t2 t2 volume of class nifti
+#' @param pd pd volume of class nifti
 #' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET
 #' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
 #' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
-#' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
+#' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used 
 #' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
 #' @return If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel. 
@@ -42,21 +42,18 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    images <- oasis_preproc(flair, t1, t2, pd)
-    oasis_study <- list(flair = images[[1]], t1 = t1, t2 = images[[2]], pd = images[[3]])
-    brain_mask <- images[[4]]
-  } else{ 
-    if(is.null(brain_mask) == TRUE){
+    oasis_study <- oasis_preproc(flair, t1, t2, pd)
+    }else{
+    ## no preprocessing  
+    oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
+    }
+  if(is.null(brain_mask) == TRUE){
       ## create a brain mask if not supplied
       brain_mask <- fslbet(infile = t1, retimg = TRUE)
       brain_mask <- brain_mask > 0
       brain_mask <- datatyper(brain_mask, trybyte= TRUE)
     } 
-    else{
-      ## no preprocessing  
-      oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-    }
-  }
+
   
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)

@@ -10,11 +10,11 @@ oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
 \arguments{
 \item{flair}{flair volume of class nifti}
 
-\item{t1}{flair volume of class nifti}
+\item{t1}{t1 volume of class nifti}
 
-\item{t2}{flair volume of class nifti}
+\item{t2}{t2 volume of class nifti}
 
-\item{pd}{flair volume of class nifti}
+\item{pd}{pd volume of class nifti}
 
 \item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET}
 
@@ -25,7 +25,7 @@ using an alternative normalization}
 
 \item{model}{an object of class glm used to make the OASIS predictions}
 
-\item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
+\item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used}
 }
 \value{
 If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel.
