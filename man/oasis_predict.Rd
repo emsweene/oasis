@@ -16,7 +16,7 @@ oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
 
 \item{pd}{pd volume of class nifti}
 
-\item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET}
+\item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET.  Note that provided brain masks should be in the same space as the T1 volume if preproc = TRUE, as all volumes will be registered to this space}
 
 \item{preproc}{is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
 

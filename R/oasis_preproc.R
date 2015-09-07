@@ -33,6 +33,6 @@ oasis_preproc <- function(flair, #flair volume of class nifti
                                                              retimg = TRUE,  dof = 6))
   
   ##return a list with the preprocessed images and a brain mask 
-  return(flair = study_inhomo_reg[[1]], t1 = study_inhomo[[2]],  study_inhomo_reg[[2]], study_inhomo_reg[[3]]  )
+  return(flair = study_inhomo_reg[[1]], t1 = study_inhomo[[2]],  t2 = study_inhomo_reg[[2]], pd = study_inhomo_reg[[3]]  )
 
 }

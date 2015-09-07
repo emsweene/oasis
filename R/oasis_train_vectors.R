@@ -39,25 +39,21 @@ oasis_train_vectors <- function(flair, ##flair volume of class nifti
   t2 <- correct_image_dim(t2)
   pd <- correct_image_dim(pd)
   
-  
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    images <- oasis_preproc(flair, t1, t2, pd)
-    oasis_study <- list(flair = images[[1]], t1 = t1, t2 = images[[2]], pd = images[[3]])
-    brain_mask <- images[[4]]
-  } else{ 
-    if(is.null(brain_mask) == TRUE){
-      ## create a brain mask if not supplied
-      brain_mask <- fslbet(infile = t1, retimg = TRUE)
-      brain_mask <- brain_mask > 0
-      brain_mask <- datatyper(brain_mask, trybyte= TRUE)
-    } 
-    else{
-      ## no preprocessing  
-      oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-    }
+    oasis_study <- oasis_preproc(flair, t1, t2, pd)
+  }else{
+    ## no preprocessing  
+    oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }
+  if(is.null(brain_mask) == TRUE){
+    ## create a brain mask if not supplied
+    brain_mask <- fslbet(infile = t1, retimg = TRUE)
+    brain_mask <- brain_mask > 0
+    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  } 
+  
   
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)

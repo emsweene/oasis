@@ -4,7 +4,7 @@
 #' @param t1 t1 volume of class nifti
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
-#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET
+#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET.  Note that provided brain masks should be in the same space as the T1 volume if preproc = TRUE, as all volumes will be registered to this space 
 #' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
 #' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
 #' using an alternative normalization 
