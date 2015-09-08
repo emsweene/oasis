@@ -10,10 +10,10 @@
 #' multi_study_dataframe <- combine_train_vectors(list(study_1_dataframe, study_2_dataframe)) }
 #' @export 
 combine_train_vectors <- function(list_of_train_vectors, preproc = FALSE){
-  if(preproc == TRUE & length(ist_of_train_vectors) > 1){
+  if(preproc == TRUE && length(ist_of_train_vectors) > 1){
     train_vectors_multi <- do.call(rbind, lapply(list_of_train_vectors, function(x) x[[1]]))
   }
-  if(preproc == TRUE & length(ist_of_train_vectors) = 1){
+  if(preproc == TRUE && length(ist_of_train_vectors) == 1){
     train_vectors_multi <- list_of_train_vectors[[1]]
   }
   else{
