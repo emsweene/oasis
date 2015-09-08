@@ -72,8 +72,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ## smooth the images using fslsmooth from the fslr package 
-  oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask)))
-  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask)))
+  oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask, smooth_mask = TRUE)))
+  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask, smooth_mask = TRUE)))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
