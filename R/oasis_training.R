@@ -8,9 +8,15 @@
 #' @examples \dontrun{
 #' my_oasis_model <- oasis_training(oasis_dataframe)  }
 #' @import oro.nifti
-oasis_training <- function(oasis_dataframe ##dataframe of OASIS data
+oasis_training <- function(..., ##dataframes from function 
+                           remove_preproc  == TRUE) 
 ){
-  
+  list_of_train_dataframes <- list(...)
+  if(remove_preproc  == TRUE){
+    list_of_train_vectors  <- lapply(list_of_train_vectors, function(x) x[[1]])
+  }
+  train_vectors_multi <- do.call(rbind, list_of_train_vectors)  
+
   ##fit the oasis model 
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
                        FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD 
