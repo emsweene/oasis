@@ -31,6 +31,11 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   model = NULL, ##an OASIS model of class glm
                   return_preproc = FALSE ##option to return the preprocessed data
   ) {
+  flair = check_nifti(flair)
+  t1 = check_nifti(t1)
+  t2 = check_nifti(t2)
+  pd = check_nifti(pd)
+  
   ##correct image dimmension
   flair <- correct_image_dim(flair)
   t1 <- correct_image_dim(t1)
@@ -41,29 +46,30 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    oasis_study <- oasis_preproc(flair, t1, t2, pd)
-    }else{
+    oasis_study <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd)
+  }else{
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-    }
-  if(is.null(brain_mask) == TRUE){
+  }
+  
+  if (is.null(brain_mask)){
       ## create a brain mask if not supplied
       brain_mask <- fslbet(infile = t1, retimg = TRUE)
       brain_mask <- brain_mask > 0
-      brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+      brain_mask <- datatyper(brain_mask, trybyte = TRUE)
     } 
 
   
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
-  cutpoint <- quantile(oasis_study[[1]][brain_mask == 1], .15)
-  brain_mask[oasis_study[[1]] <= cutpoint] <- 0 
+  cutpoint <- quantile(oasis_study$flair[brain_mask == 1], .15)
+  brain_mask[oasis_study$flair <= cutpoint] <- 0 
   
   ## the image normalization 
   if(normalize == TRUE){
     oasis_study <- lapply(oasis_study, function (x) zscore_img(x, brain_mask, margin = NULL))  
-    }
+  }
   
   ## smooth the images using fslsmooth from the fslr package 
   oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask)))
@@ -82,7 +88,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"))
   
   ## make the model predictions 
-  if(is.null(model) == TRUE){
+  if(is.null(model)){
   predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
   } else { 
   predictions <- predict(model, newdata = oasis_dataframe, type = 'response')    
@@ -90,18 +96,20 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ##put the predictions onto the brain 
   predictions_nifti <- niftiarr(flair, 0) 
-  predictions_nifti[top_voxels == TRUE] <- predictions
+  predictions_nifti[top_voxels == 1] <- predictions
 
   
   ##smooth the probability map 
-  sigma.smooth<-diag(3,3)
-  k.size<- 5
-  prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
-                                                   ksize=k.size,mask=brain_mask))
+#   sigma.smooth<-diag(3,3)
+#   k.size<- 5
+#   prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
+#                                                    ksize=k.size,mask=brain_mask))
+  # sigma = 1.25
   ##return the data
   
   if(return_preproc == TRUE){
-  return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
+  return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2,
+              pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
   } else{
   return(predictions_nifti)
   }

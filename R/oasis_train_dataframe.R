@@ -32,6 +32,12 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                           return_preproc = FALSE 
                           ) 
   { 
+  
+  flair = check_nifti(flair)
+  t1 = check_nifti(t1)
+  t2 = check_nifti(t2)
+  pd = check_nifti(pd)
+  
   ##correct image dimmension
   flair <- correct_image_dim(flair)
   t1 <- correct_image_dim(t1)
@@ -41,12 +47,12 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    oasis_study <- oasis_preproc(flair, t1, t2, pd)
+    oasis_study <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }else{
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }
-  if(is.null(brain_mask) == TRUE){
+  if(is.null(brain_mask)){
     ## create a brain mask if not supplied
     brain_mask <- fslbet(infile = t1, retimg = TRUE)
     brain_mask <- brain_mask > 0
@@ -57,8 +63,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
-  cutpoint <- quantile(oasis_study[[1]][brain_mask == 1], .15)
-  brain_mask[oasis_study[[1]] <= cutpoint] <- 0 
+  cutpoint <- quantile(oasis_study$flair[brain_mask == 1], .15)
+  brain_mask[oasis_study$flair <= cutpoint] <- 0 
 
   ## the image normalization 
   if(normalize == TRUE){
@@ -75,9 +81,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                                 cutoff = .85)
 
   
-  oasis_study[[length(oasis_study) + 1]] <-  gold_standard
+  oasis_study <-  c(oasis_study, gold_standard = gold_standard)
 
-  if(is.null(slices) == TRUE){
+  if(is.null(slices)){
     oasis_study <- lapply(oasis_study, function(x) x[top_voxels == 1])
   } else {
     if(orientation == "axial"){
@@ -101,7 +107,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"),  "GoldStandard")
   
   if(return_preproc == TRUE){
-    return(list(oasis_dataframe = oasis_dataframe, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
+    return(list(oasis_dataframe = oasis_dataframe, flair = flair, t1 = t1, t2 = t2, 
+                pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
   } else{
     return(oasis_dataframe)
   }
