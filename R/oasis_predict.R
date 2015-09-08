@@ -89,7 +89,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ## make the model predictions 
   if(is.null(model)){
-  predictions <- predict(oasis_model, newdata = oasis_dataframe, type = 'response')    
+  predictions <- predict( oasis::oasis_model, newdata = oasis_dataframe, type = 'response')    
   } else { 
   predictions <- predict(model, newdata = oasis_dataframe, type = 'response')    
   }

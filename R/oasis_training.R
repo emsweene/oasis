@@ -21,7 +21,7 @@ oasis_training <- function(..., ##dataframes from function
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
                        FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD 
                      + T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 
-                     + T1_20 *T1 , data = oasis_dataframe, family=binomial)
+                     + T1_20 *T1 , data = train_vectors_multi, family=binomial)
   
   ##clean up the oasis model 
   oasis_model$y = c()
