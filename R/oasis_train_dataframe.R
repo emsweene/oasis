@@ -20,7 +20,7 @@
 #' Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
 #' the PD volume, the brain mask for the subject, and the voxel selection mask. 
 #' @export 
-oasis_train_vectors <- function(flair, ##flair volume of class nifti
+oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
                           t2, ##t2 volume of class nifti
                           pd, ##pd volume of class nifti

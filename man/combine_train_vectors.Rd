@@ -4,10 +4,12 @@
 \alias{combine_train_vectors}
 \title{Combine OASIS training vectors}
 \usage{
-combine_train_vectors(list_of_train_vectors)
+combine_train_vectors(list_of_train_vectors, preproc = FALSE)
 }
 \arguments{
-\item{list_of_train_vectors}{a list of outputs from the oasis_trian_vectors}
+\item{list_of_train_vectors}{list of outputs from the oasis_trian_vectors function}
+
+\item{preproc}{logical indicating whether the output of the oasis_train_vectors contains the preprocessed images as well as the dataframe.}
 }
 \value{
 This function reutrns a dataframe for use with the oasis_training function.
@@ -20,7 +22,6 @@ that can be used in the oasis_training function.  The multiple dataframes should
 \dontrun{
 study_1_dataframe <- oasis_train_vectors(flair = FLAIR_1 ,t1 = T1_1 , t2 = T2_1, pd = PD_1, gold_standard = GOLD_STANDARD_1)
 study_2_dataframe <- oasis_train_vectors(flair = FLAIR_2 ,t1 = T1_2 , t2 = T2_2, pd = PD_2, gold_standard = GOLD_STANDARD_2)
-multistudy_dataframe <- combine_train_vectors(list(study_1_dataframe, study_2_dataframe))
-  }
+multi_study_dataframe <- combine_train_vectors(list(study_1_dataframe, study_2_dataframe)) }
 }
 
