@@ -9,15 +9,11 @@
 #' study_2_dataframe <- oasis_train_vectors(flair = FLAIR_2 ,t1 = T1_2 , t2 = T2_2, pd = PD_2, gold_standard = GOLD_STANDARD_2)
 #' multi_study_dataframe <- combine_train_vectors(list(study_1_dataframe, study_2_dataframe)) }
 #' @export 
-combine_train_vectors <- function(list_of_train_vectors, preproc = FALSE){
-  if(preproc == TRUE && length(ist_of_train_vectors) > 1){
-    train_vectors_multi <- do.call(rbind, lapply(list_of_train_vectors, function(x) x[[1]]))
+combine_train_vectors <- function(..., remove_preproc = FALSE){
+  list_of_train_vectors <- list(...)
+  if(preproc  == TRUE){
+    list_of_train_vectors  <- lapply(list_of_train_vectors, function(x) x[[1]])
   }
-  if(preproc == TRUE && length(ist_of_train_vectors) == 1){
-    train_vectors_multi <- list_of_train_vectors[[1]]
-  }
-  else{
-    train_vectors_multi <- do.call(rbind, list_of_train_vectors)  
-  }
+  train_vectors_multi <- do.call(rbind, list_of_train_vectors)  
   return(train_vectors_multi)
 }
