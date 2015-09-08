@@ -9,8 +9,6 @@ Description:  This package trains and makes predictions from the OASIS method, d
 Depends:
   fslr,
   oro.nifti
-Imports:
-  AnalyzeFMRI
 License: GPL-2
 LazyLoad: yes
 LazyData: yes

@@ -10,7 +10,6 @@
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used 
-#' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
 #' @return If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel. 
 #' Otherwise, the function returns a list of volumes: the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
@@ -95,11 +94,9 @@ oasis_predict <- function(flair, ##flair volume of class nifti
 
   
   ##smooth the probability map 
-  sigma.smooth<-diag(3,3)
-  k.size<- 5
-  prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
-                                                   ksize=k.size,mask=brain_mask))
-  ##return the data
+  prob_map<-fslsmooth(FLAIR, sigma = 1.25, mask = mask)
+  
+   ##return the data
   
   if(return_preproc == TRUE){
   return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
