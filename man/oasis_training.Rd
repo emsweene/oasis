@@ -4,10 +4,12 @@
 \alias{oasis_training}
 \title{OASIS Training}
 \usage{
-oasis_training(oasis_dataframe)
+oasis_training(..., remove_preproc = TRUE)
 }
 \arguments{
-\item{oasis_dataframe}{dataframe from the oasis_train_vectors function}
+\item{...}{dataframe(s) produced by the oasis_preproc function}
+
+\item{remove_preproc}{a logical stateing if preprocessed volumes need to be removed from the dataframes}
 }
 \value{
 Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict.
@@ -17,6 +19,6 @@ This function trains the OASIS model from a data frame produced by the function 
 }
 \examples{
 \dontrun{
-my_oasis_model <- oasis_training(oasis_dataframe)  }
+my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
 }
 

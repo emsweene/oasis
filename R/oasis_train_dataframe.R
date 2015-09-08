@@ -14,7 +14,6 @@
 #' @param slices vector of desired slices to train on, if NULL then train over the entire brain mask 
 #' @param orientation string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"
 #' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
-#' @importFrom AnalyzeFMRI GaussSmoothArray
 #' @import fslr
 #' @return If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
 #' Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,

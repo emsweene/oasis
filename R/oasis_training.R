@@ -1,16 +1,16 @@
 #' @title OASIS Training
 #' @description This function trains the OASIS model from a data frame produced by the function oasis_train_vectors 
-#' @param oasis_dataframe dataframe from the oasis_train_vectors function
-#' @importFrom AnalyzeFMRI GaussSmoothArray
+#' @param ... dataframe(s) produced by the oasis_preproc function 
+#' @param remove_preproc a logical stateing if preprocessed volumes need to be removed from the dataframes 
 #' @import fslr
 #' @export 
 #' @return Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict. 
 #' @examples \dontrun{
-#' my_oasis_model <- oasis_training(oasis_dataframe)  }
+#' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
 #' @import oro.nifti
 oasis_training <- function(..., ##dataframes from function 
-                           remove_preproc  == TRUE) 
-){
+                           remove_preproc  = TRUE) 
+{
   list_of_train_dataframes <- list(...)
   if(remove_preproc  == TRUE){
     list_of_train_vectors  <- lapply(list_of_train_vectors, function(x) x[[1]])

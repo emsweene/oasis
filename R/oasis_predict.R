@@ -94,9 +94,11 @@ oasis_predict <- function(flair, ##flair volume of class nifti
 
   
   ##smooth the probability map 
-  prob_map<-fslsmooth(FLAIR, sigma = 1.25, mask = mask)
-  
-   ##return the data
+  sigma.smooth<-diag(3,3)
+  k.size<- 5
+  prob_map<-niftiarr(predictions_nifti, GaussSmoothArray(predictions_nifti,sigma=sigma.smooth,
+                                                   ksize=k.size,mask=brain_mask))
+  ##return the data
   
   if(return_preproc == TRUE){
   return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2, pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
