@@ -7,6 +7,7 @@
 #' @param t1 t1 volume of class nifti
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
+#' @param verbose a logical value for printing diagnostic output 
 #' @return Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.  
 #' @examples \dontrun{
 #' library(oro.nifti)
@@ -19,14 +20,20 @@
 oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti
                           t2, # t2 volume of class nifti
-                          pd # pd volume of class nifti
+                          pd, # pd volume of class nifti
+                          verbose = TRUE
 ){
   
   study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   study = check_nifti(study)
 
   ## inhomogenity correction for all four modalities using fsl bias correct
-  study_inhomo <- lapply(study, function(x) fsl_biascorrect(x, retimg = TRUE))
+  if (verbose){
+    message("Running Inhomogeneity Correction\n")
+  }
+  study_inhomo <- lapply(study, function(x) fsl_biascorrect(x, 
+                                                            retimg = TRUE,
+                                                            verbose = verbose))
   
   
   ##rigidly register to the flair, t2, and pd to the t1 using fsl flirt 
