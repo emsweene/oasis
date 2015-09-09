@@ -5,7 +5,7 @@
 \title{OASIS Prediction}
 \usage{
 oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
-  normalize = TRUE, model = NULL, return_preproc = FALSE)
+  normalize = TRUE, model = NULL, return_preproc = FALSE, cores = 1)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
@@ -26,6 +26,8 @@ using an alternative normalization}
 \item{model}{an object of class glm used to make the OASIS predictions}
 
 \item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used}
+
+\item{cores}{numeric indicating the number of cores to be used}
 }
 \value{
 If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel.

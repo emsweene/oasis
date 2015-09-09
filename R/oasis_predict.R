@@ -10,7 +10,9 @@
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used 
+#' @param cores numeric indicating the number of cores to be used
 #' @import fslr
+#' @import parallel
 #' @return If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel. 
 #' Otherwise, the function returns a list of volumes: the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
 #' the PD volume, the brain mask for the subject, and the voxel selection mask. 
@@ -29,7 +31,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   preproc = FALSE, ##option to preprocess the data
                   normalize = TRUE, ##option to normalize 
                   model = NULL, ##an OASIS model of class glm
-                  return_preproc = FALSE ##option to return the preprocessed data
+                  return_preproc = FALSE, ##option to return the preprocessed data
+                  cores = 1
   ) {
   flair = check_nifti(flair)
   t1 = check_nifti(t1)
@@ -72,8 +75,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ## smooth the images using fslsmooth from the fslr package 
-  oasis_study <- append(oasis_study, lapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask, smooth_mask = TRUE)))
-  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask, smooth_mask = TRUE)))
+  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask), mc.cores = cores))
+  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask), mc.cores = cores))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,

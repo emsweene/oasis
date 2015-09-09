@@ -8,6 +8,9 @@
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
 #' @param verbose a logical value for printing diagnostic output 
+#' @param cores numeric indicating the number of cores to be used
+#' @import parallel
+#' @import fslr
 #' @return Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.  
 #' @examples \dontrun{
 #' library(oro.nifti)
@@ -21,7 +24,8 @@ oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti
                           t2, # t2 volume of class nifti
                           pd, # pd volume of class nifti
-                          verbose = TRUE
+                          verbose = TRUE,
+                          cores = 1
 ){
   
   study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
@@ -31,19 +35,21 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   if (verbose){
     message("Running Inhomogeneity Correction\n")
   }
-  study_inhomo <- lapply(study, function(x) fsl_biascorrect(x, 
+  study_inhomo <- mclapply(study, 
+                           function(x) fsl_biascorrect(x, 
                                                             retimg = TRUE,
-                                                            verbose = verbose))
+                                                            verbose = verbose), 
+                           mc.cores = cores)
   
   
   ##rigidly register to the flair, t2, and pd to the t1 using fsl flirt 
-  study_inhomo_reg <- lapply(study[c("flair","t2", "pd")], function(x)  {
+  study_inhomo_reg <- mclapply(study[c("flair","t2", "pd")], function(x)  {
     tfile = tempfile(fileext = ".mat")
     flirt(infile = x, omat = tfile,
           reffile =   study$t1, 
           retimg = TRUE,  dof = 6)
-    }
-    )
+    },
+    mc.cores = cores)
   
   ##return a list with the preprocessed images and a brain mask 
   return(list(flair = study_inhomo_reg[[1]], t1 = study_inhomo[[2]],  

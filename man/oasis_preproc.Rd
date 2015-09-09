@@ -4,7 +4,7 @@
 \alias{oasis_preproc}
 \title{OASIS Image Preprocessing}
 \usage{
-oasis_preproc(flair, t1, t2, pd)
+oasis_preproc(flair, t1, t2, pd, verbose = TRUE, cores = 1)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
@@ -14,6 +14,10 @@ oasis_preproc(flair, t1, t2, pd)
 \item{t2}{t2 volume of class nifti}
 
 \item{pd}{pd volume of class nifti}
+
+\item{verbose}{a logical value for printing diagnostic output}
+
+\item{cores}{numeric indicating the number of cores to be used}
 }
 \value{
 Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.

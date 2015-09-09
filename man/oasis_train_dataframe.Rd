@@ -6,7 +6,7 @@
 \usage{
 oasis_train_dataframe(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
   preproc = FALSE, normalize = TRUE, slices = NULL,
-  orientation = "axial", return_preproc = FALSE)
+  orientation = "axial", return_preproc = FALSE, cores = 1)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
@@ -31,6 +31,8 @@ using an alternative normalization}
 \item{orientation}{string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"}
 
 \item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
+
+\item{cores}{numeric indicating the number of cores to be used}
 }
 \value{
 If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function.
