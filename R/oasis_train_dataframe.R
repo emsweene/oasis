@@ -81,7 +81,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                                 cutoff = .85)
 
   
-  oasis_study <-  c(oasis_study, gold_standard = gold_standard)
+  oasis_study <-  c(oasis_study, gold_standard)
 
   if(is.null(slices)){
     oasis_study <- lapply(oasis_study, function(x) x[top_voxels == 1])
