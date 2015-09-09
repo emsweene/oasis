@@ -50,7 +50,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    oasis_study <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd)
+    oasis_study <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, cores = cores)
   }else{
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
@@ -71,12 +71,12 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
 
   ## the image normalization 
   if(normalize == TRUE){
-    oasis_study <- lapply(oasis_study, function (x) zscore_img(x, brain_mask, margin = NULL))  
+    oasis_study <- mclapply(oasis_study, function (x) zscore_img(x, brain_mask, margin = NULL), mc.cores = cores)
   }
   
   ## smooth the images using fslsmooth from the fslr package 
   oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask), mc.cores = cores))
-  oasis_study <- append(oasis_study, lapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask), mc.cores = cores))
+  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask), mc.cores = cores))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
