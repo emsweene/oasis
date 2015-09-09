@@ -54,7 +54,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   if (is.null(brain_mask)){
       ## create a brain mask if not supplied
-      brain_mask <- fslbet(infile = t1, retimg = TRUE)
+      brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
       brain_mask <- brain_mask > 0
       brain_mask <- datatyper(brain_mask, trybyte = TRUE)
     } 
@@ -95,7 +95,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ##put the predictions onto the brain 
-  predictions_nifti <- niftiarr(flair, 0) 
+  predictions_nifti <- niftiarr(brain_mask, 0) 
   predictions_nifti[top_voxels == 1] <- predictions
 
   

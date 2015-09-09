@@ -54,7 +54,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   }
   if(is.null(brain_mask)){
     ## create a brain mask if not supplied
-    brain_mask <- fslbet(infile = t1, retimg = TRUE)
+    brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
     brain_mask <- brain_mask > 0
     brain_mask <- datatyper(brain_mask, trybyte= TRUE)
   } 
