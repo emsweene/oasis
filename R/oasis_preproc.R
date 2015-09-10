@@ -62,7 +62,7 @@ oasis_preproc <- function(flair, #flair volume of class nifti
                            verbose = verbose), 
                            mc.cores = cores)
 
-  study[c(length(study) + 1)] <- brain_mask
+  study[[c(length(study) + 1)]] <- brain_mask
   
   ##return a list with the preprocessed images and a brain mask 
   return(study)
