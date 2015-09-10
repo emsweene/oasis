@@ -9,14 +9,14 @@
 #' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
 #' @import oro.nifti
 oasis_training <- function(..., ##dataframes from function 
-                           remove_preproc  = TRUE) 
+                           remove_preproc  = FALSE) 
 {
   list_of_train_dataframes <- list(...)
   if(remove_preproc  == TRUE){
-    list_of_train_vectors  <- lapply(list_of_train_vectors, function(x) x[[1]])
+    list_of_train_dataframes  <- lapply( list_of_train_dataframes, function(x) x[[1]])
   }
   train_vectors_multi <- do.call(rbind, list_of_train_dataframes)  
-
+  train_vectors_multi <- as.data.frame(train_vectors_multi)
   ##fit the oasis model 
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
                        FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD 
