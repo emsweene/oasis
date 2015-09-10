@@ -15,7 +15,7 @@ oasis_training <- function(..., ##dataframes from function
   if(remove_preproc  == TRUE){
     list_of_train_vectors  <- lapply(list_of_train_vectors, function(x) x[[1]])
   }
-  train_vectors_multi <- do.call(rbind, list_of_train_vectors)  
+  train_vectors_multi <- do.call(rbind, list_of_train_dataframes)  
 
   ##fit the oasis model 
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
