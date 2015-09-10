@@ -49,13 +49,14 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    oasis_study <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, cores = cores)
-  }else{
+    preprocess <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, cores = cores)
+    oasis_study <- preprocess[c("flair","t1", "t2", "pd")]
+    brain_mask <- preprocess[[5]]
+    }else{
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-  }
-  
-  if (is.null(brain_mask)){
+    }
+  if (is.null(brain_mask) & !preproc){
       ## create a brain mask if not supplied
       brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
       brain_mask <- brain_mask > 0

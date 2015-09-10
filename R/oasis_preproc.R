@@ -30,29 +30,41 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   
   study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   study = check_nifti(study)
-
-  ## inhomogenity correction for all four modalities using fsl bias correct
-  if (verbose){
-    message("Running Inhomogeneity Correction\n")
-  }
-  study_inhomo <- mclapply(study, 
-                           function(x) fsl_biascorrect(x, 
-                                                            retimg = TRUE,
-                                                            verbose = verbose), 
-                           mc.cores = cores)
   
+  if (verbose){
+    message("Rigidly Registering Data to T1 Space\n")
+  } 
   
   ##rigidly register to the flair, t2, and pd to the t1 using fsl flirt 
-  study_inhomo_reg <- mclapply(study[c("flair","t2", "pd")], function(x)  {
+  study[c("flair","t2", "pd")] <- mclapply(study[c("flair","t2", "pd")], function(x)  {
     tfile = tempfile(fileext = ".mat")
     flirt(infile = x, omat = tfile,
           reffile =   study$t1, 
           retimg = TRUE,  dof = 6)
-    },
-    mc.cores = cores)
+          }, mc.cores = cores)
+ 
+  if (verbose){
+    message("Running Brain Extraction Tool\n")
+  }
+  
+  brain_mask <- fslbet(infile = study$t1, retimg = TRUE)
+  brain_mask <- brain_mask > 0
+  brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  
+  study <- mclapply(study, function(x) x*brain_mask) 
+  
+  ## inhomogenity correction for all four modalities using fsl bias correct
+  if (verbose){
+    message("Running Inhomogeneity Correction\n")
+  }
+  study <- mclapply(study, function(x) fsl_biascorrect(x, 
+                           retimg = TRUE,
+                           verbose = verbose), 
+                           mc.cores = cores)
+
+  study[c(length(study) + 1)] <- brain_mask
   
   ##return a list with the preprocessed images and a brain mask 
-  return(list(flair = study_inhomo_reg[[1]], t1 = study_inhomo[[2]],  
-              t2 = study_inhomo_reg[[2]], pd = study_inhomo_reg[[3]]))
+  return(study)
   
   }
