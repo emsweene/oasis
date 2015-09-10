@@ -4,7 +4,7 @@
 \alias{oasis_training}
 \title{OASIS Training}
 \usage{
-oasis_training(..., remove_preproc = TRUE)
+oasis_training(..., remove_preproc = FALSE)
 }
 \arguments{
 \item{...}{dataframe(s) produced by the oasis_preproc function}

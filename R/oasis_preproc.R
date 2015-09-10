@@ -8,7 +8,7 @@
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
 #' @param verbose a logical value for printing diagnostic output 
-#' @param cores numeric indicating the number of cores to be used
+#' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
 #' @import parallel
 #' @import fslr
 #' @return Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.  

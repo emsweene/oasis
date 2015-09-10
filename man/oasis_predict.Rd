@@ -5,7 +5,8 @@
 \title{OASIS Prediction}
 \usage{
 oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
-  normalize = TRUE, model = NULL, return_preproc = FALSE, cores = 1)
+  normalize = TRUE, model = NULL, return_preproc = FALSE,
+  binary = FALSE, threshold = 0.16, cores = 1)
 }
 \arguments{
 \item{flair}{flair volume of class nifti}
@@ -27,7 +28,11 @@ using an alternative normalization}
 
 \item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used}
 
-\item{cores}{numeric indicating the number of cores to be used}
+\item{binary}{logical indicating whether a binary map should be returned by thresholding the probability map}
+
+\item{threshold}{numeric indicating the threshold value for the probability map, with default of 0.16 for the OASIS paper}
+
+\item{cores}{numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)}
 }
 \value{
 If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel.

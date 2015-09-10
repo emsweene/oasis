@@ -10,7 +10,9 @@
 #' using an alternative normalization 
 #' @param model an object of class glm used to make the OASIS predictions 
 #' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned, if NULL then the model from the OASIS paper will be used 
-#' @param cores numeric indicating the number of cores to be used
+#' @param binary logical indicating whether a binary map should be returned by thresholding the probability map
+#' @param threshold numeric indicating the threshold value for the probability map, with default of 0.16 for the OASIS paper
+#' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
 #' @return If return_preproc = FALSE the function reutrns a volume of class nifti containing the OASIS probability for each voxel. 
@@ -32,6 +34,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                   normalize = TRUE, ##option to normalize 
                   model = NULL, ##an OASIS model of class glm
                   return_preproc = FALSE, ##option to return the preprocessed data
+                  binary = FALSE,
+                  threshold = 0.16, 
                   cores = 1
   ) {
   flair = check_nifti(flair)
@@ -106,13 +110,26 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##smooth the probability map 
   prob_map<- fslsmooth(predictions_nifti, sigma = 1.25, mask = brain_mask, smooth_mask = TRUE)
 
-  
-  if(return_preproc == TRUE){
+  if(binary == TRUE){
+  binary_map <- predictions_nifti
+  binary_map[predictions_nifti > threshold] <- 1
+  binary_map[predictions_nifti <= threshold] <- 0
+  }
+  if(return_preproc == TRUE & binary == FALSE){
   return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2,
               pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
-  } else{
+  } 
+  if(return_preproc == TRUE & binary == TRUE){
+    return(list(oasis_map = predictions_nifti, flair = flair, t1 = t1, t2 = t2,
+                pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels, binary_map = binary_map))
+  }   
+  if(return_preproc == FALSE & binary == TRUE){
+  return(list(oasis_map = predictions_nifti, binary_map = binary_map))
+  }
+  else{
   return(predictions_nifti)
   }
+  
 }
 
 

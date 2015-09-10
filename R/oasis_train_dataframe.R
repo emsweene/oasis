@@ -14,7 +14,7 @@
 #' @param slices vector of desired slices to train on, if NULL then train over the entire brain mask 
 #' @param orientation string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"
 #' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
-#' @param cores numeric indicating the number of cores to be used
+#' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
 #' @return If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
