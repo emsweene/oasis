@@ -17,7 +17,7 @@ oasis_preproc(flair, t1, t2, pd, verbose = TRUE, cores = 1)
 
 \item{verbose}{a logical value for printing diagnostic output}
 
-\item{cores}{numeric indicating the number of cores to be used}
+\item{cores}{numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)}
 }
 \value{
 Returns a list of objects of class nifti, namely the preprocessed FLAIR, T1, T2, and PD registered to the space of the T1 volume.

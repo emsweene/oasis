@@ -32,7 +32,7 @@ using an alternative normalization}
 
 \item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
 
-\item{cores}{numeric indicating the number of cores to be used}
+\item{cores}{numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)}
 }
 \value{
 If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function.
