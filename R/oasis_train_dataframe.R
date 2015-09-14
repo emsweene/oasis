@@ -17,6 +17,7 @@
 #' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
+#' @import stats
 #' @return If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
 #' Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
 #' the PD volume, the brain mask for the subject, and the voxel selection mask. 

@@ -9,6 +9,8 @@ Description:  Trains and makes predictions from the OASIS method, described in d
 Depends:
   fslr,
   oro.nifti,
+Imports: 
+  stats,
   parallel
 License: GPL-2
 LazyLoad: yes
