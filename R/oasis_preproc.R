@@ -7,6 +7,7 @@
 #' @param t1 t1 volume of class nifti
 #' @param t2 t2 volume of class nifti
 #' @param pd pd volume of class nifti
+#' @param brain_mask binary mask volume of class nifti
 #' @param verbose a logical value for printing diagnostic output 
 #' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
 #' @import parallel
@@ -24,6 +25,7 @@ oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti
                           t2, # t2 volume of class nifti
                           pd, # pd volume of class nifti
+                          brain_mask = NULL,
                           verbose = TRUE,
                           cores = 1
 ){
@@ -47,9 +49,13 @@ oasis_preproc <- function(flair, #flair volume of class nifti
     message("Running Brain Extraction Tool\n")
   }
   
-  brain_mask <- fslbet(infile = study$t1, retimg = TRUE)
-  brain_mask <- brain_mask > 0
-  brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  
+  if (is.null(brain_mask)){
+    brain_mask <- fslbet(infile = study$t1, retimg = TRUE)
+    brain_mask <- brain_mask > 0
+    brain_mask <- datatyper(brain_mask, trybyte= TRUE)
+  }
+  brain_mask = check_nifti(brain_mask)
   
   study <- mclapply(study, function(x) x*brain_mask) 
   
