@@ -65,9 +65,10 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   if (is.null(brain_mask) & !preproc){
       ## create a brain mask if not supplied
       brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
-      brain_mask <- brain_mask > 0
-      brain_mask <- datatyper(brain_mask, trybyte = TRUE)
-    } 
+  } 
+  brain_mask = check_nifti(brain_mask)
+  brain_mask <- brain_mask > 0
+  brain_mask <- datatyper(brain_mask, trybyte= TRUE)  
 
   
   ##adjust brain mask for OASIS 
