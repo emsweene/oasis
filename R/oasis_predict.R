@@ -99,9 +99,11 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ## make the model predictions 
   if(is.null(model)){
-  predictions <- predict( oasis::oasis_model, newdata = oasis_dataframe, type = 'response')    
+  predictions <- predict( oasis::oasis_model, newdata = oasis_dataframe, 
+                          type = 'response')    
   } else { 
-  predictions <- predict(model, newdata = oasis_dataframe, type = 'response')    
+    predictions <- predict(model, newdata = oasis_dataframe, 
+                           type = 'response')    
   }
   
   ##put the predictions onto the brain 
@@ -134,8 +136,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   if (return_preproc == FALSE & binary == TRUE) {
   return(list(oasis_map = prob_map, 
               binary_map = binary_map))
-  }
-  else{
+  } else{
   return(predictions_nifti)
   }
   
