@@ -21,7 +21,7 @@ voxel_selection <- function(flair, ##the flair volume
   cutpoint <- quantile(flair[brain_mask == 1], cutoff)
   outmask <-  flair > cutpoint
   outmask <- outmask * brain_mask 
-  outmask <- datatyper(outmask, trybyte = TRUE)
-  ##return the binary mask mask of the flair values above the cutpoint 
+  outmask <- datatype(as.nifti(outmask), trybyte = TRUE)
+  ##return the binary mask of the flair values above the cutpoint 
   return(outmask) 
 }
