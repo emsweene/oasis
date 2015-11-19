@@ -68,7 +68,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   } 
   brain_mask = check_nifti(brain_mask)
   brain_mask <- brain_mask > 0
-  brain_mask <- datatyper(brain_mask, trybyte= TRUE)  
+  brain_mask <- datatype(brain_mask, trybyte= TRUE)  
 
   
   ##adjust brain mask for OASIS 
@@ -83,8 +83,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   }
   
   ## smooth the images using fslsmooth from the fslr package 
-  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask), mc.cores = cores))
-  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask), mc.cores = cores))
+  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask, retimg = TRUE), mc.cores = cores))
+  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask, retimg = TRUE), mc.cores = cores))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
