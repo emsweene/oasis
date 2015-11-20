@@ -114,7 +114,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ##smooth the probability map 
   prob_map <- fslsmooth(predictions_nifti, sigma = 1.25, 
-                       mask = brain_mask, 
+                       mask = brain_mask, retimg = TRUE,
                        smooth_mask = TRUE)
 
   if (binary == TRUE) {
