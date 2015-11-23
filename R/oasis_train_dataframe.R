@@ -62,7 +62,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     ## create a brain mask if not supplied
     brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
     brain_mask <- brain_mask > 0
-    brain_mask <- datatyper(brain_mask, trybyte = TRUE)
+    brain_mask <- datatype(brain_mask, trybyte = TRUE)
   } 
   
   ##adjust brain mask for OASIS 
@@ -77,8 +77,10 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   }
   
   ## smooth the images using fslsmooth from the fslr package 
-  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask), mc.cores = cores))
-  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask), mc.cores = cores))
+  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask, retimg = TRUE), 
+    mc.cores = cores))
+  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask, 
+    retimg = TRUE), mc.cores = cores))
   
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
@@ -93,8 +95,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   } else {
     if(orientation == "axial"){
       oasis_study <- lapply(oasis_study, function(x) x[,,slices])
-      oasis_study <- lapply(oasis_study, function(x) x[top_voxels[,,slices] == 1])
-      
+      oasis_study <- lapply(oasis_study, function(x) x[top_voxels[,,slices] == 1])    
     }    
     if(orientation == "coronal"){
       oasis_study <- lapply(oasis_study, function(x) x[,slices,])
@@ -112,8 +113,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"),  "GoldStandard")
   
   if(return_preproc == TRUE){
-    return(list(oasis_dataframe = oasis_dataframe, flair = flair, t1 = t1, t2 = t2, 
-                pd = pd, brain_mask = brain_mask, voxel_selection = top_voxels))
+    return(list(oasis_dataframe = oasis_dataframe, flair = flair, 
+      t1 = t1, t2 = t2, pd = pd, 
+      brain_mask = brain_mask, voxel_selection = top_voxels))
   } else{
     return(oasis_dataframe)
   }

@@ -55,7 +55,7 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   }
   brain_mask = check_nifti(brain_mask)
   brain_mask <- brain_mask > 0
-  brain_mask <- datatyper(brain_mask, trybyte= TRUE)  
+  brain_mask <- datatype(brain_mask, trybyte= TRUE)  
   
   study <- mclapply(study, function(x) x*brain_mask) 
   
