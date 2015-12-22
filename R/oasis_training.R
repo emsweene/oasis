@@ -1,10 +1,14 @@
 #' @title OASIS Training
-#' @description This function trains the OASIS model from a data frame produced by the function oasis_train_vectors 
-#' @param ... dataframe(s) produced by the oasis_preproc function 
-#' @param remove_preproc a logical stateing if preprocessed volumes need to be removed from the dataframes 
+#' @description This function trains the OASIS model from a \code{data.frame} 
+#' produced by the function \code{\link{oasis_train_dataframe}} 
+#' @param ... \code{data.frame}(s) produced by the 
+#' \code{\link{oasis_train_dataframe}} function 
+#' @param remove_preproc a logical stating if preprocessed volumes 
+#' need to be removed from the \code{data.frame}s 
 #' @import fslr
 #' @export 
-#' @return Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict. 
+#' @return Returns a \code{glm} object containing the trained OASIS 
+#' coefficients to be used by the function \code{\link{oasis_predict}}.
 #' @examples \dontrun{
 #' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
 #' @import oro.nifti
@@ -12,7 +16,7 @@ oasis_training <- function(..., ##dataframes from function
                            remove_preproc  = FALSE) 
 {
   list_of_train_dataframes <- list(...)
-  if(remove_preproc  == TRUE){
+  if (remove_preproc  == TRUE) {
     list_of_train_dataframes  <- lapply( list_of_train_dataframes, function(x) x[[1]])
   }
   train_vectors_multi <- do.call(rbind, list_of_train_dataframes)  
@@ -21,7 +25,8 @@ oasis_training <- function(..., ##dataframes from function
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
                        FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD 
                      + T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 
-                     + T1_20 *T1 , data = train_vectors_multi, family=binomial)
+                     + T1_20 *T1 , data = train_vectors_multi, 
+                     family = binomial)
   
   ##clean up the oasis model 
   oasis_model$y = c()

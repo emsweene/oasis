@@ -7,15 +7,19 @@
 oasis_training(..., remove_preproc = FALSE)
 }
 \arguments{
-\item{...}{dataframe(s) produced by the oasis_preproc function}
+\item{...}{\code{data.frame}(s) produced by the 
+\code{\link{oasis_train_dataframe}} function}
 
-\item{remove_preproc}{a logical stateing if preprocessed volumes need to be removed from the dataframes}
+\item{remove_preproc}{a logical stating if preprocessed volumes 
+need to be removed from the \code{data.frame}s}
 }
 \value{
-Returns a glm object containing the trained OASIS coefficients to be used by the function oasis_predict.
+Returns a \code{glm} object containing the trained OASIS 
+coefficients to be used by the function \code{\link{oasis_predict}}.
 }
 \description{
-This function trains the OASIS model from a data frame produced by the function oasis_train_vectors
+This function trains the OASIS model from a \code{data.frame} 
+produced by the function \code{\link{oasis_train_dataframe}}
 }
 \examples{
 \dontrun{
