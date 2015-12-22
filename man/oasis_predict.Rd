@@ -35,7 +35,7 @@ using an alternative normalization}
 \item{model}{an object of class \code{\link{glm}} used to make the OASIS predictions}
 
 \item{return_preproc}{is a logical value that indicates whether the 
-preprcoessed images should be returned, if \code{NULL} 
+preprocessed images should be returned, if \code{NULL} 
 then the model from the OASIS paper will be used}
 
 \item{binary}{logical indicating whether a binary map 
@@ -48,7 +48,7 @@ for the probability map, with default of 0.16 for the OASIS paper}
 used (no more than 4 is useful for this software implementation)}
 }
 \value{
-If \code{return_preproc = FALSE} the function reutrns a 
+If \code{return_preproc = FALSE} the function returns a 
 volume of class \code{\link{nifti}} containing the OASIS probability for each voxel. 
 Otherwise, the function returns a list of volumes: 
 the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,

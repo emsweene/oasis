@@ -1,16 +1,16 @@
 #' @title Voxel Selection Procedure
 #' @description This function creates a binary mask for the voxel selection 
 #' procedure for OASIS.
-#' @param flair flair volume of class nifti
-#' @param brain_mask brain mask of class nifti
+#' @param flair FLAIR volume of class \code{\link{nifti}}
+#' @param brain_mask brain mask of class \code{\link{nifti}}
 #' @param cutoff the percentile cutoff for the thresholding, 
 #' passed to \code{\link{quantile}}
-#' @return Returns the voxel selection mask as an object of class nifti.  
+#' @return Returns the voxel selection mask as an object of class \code{\link{nifti}}.  
 #' @examples \dontrun{
-#' library(oro.nifti)
-#' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
-#' brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE) 
-#' voxel_selection_mask <- oasis_preproc(flair, brain_mask, cutoff = .85) }
+#' library(fslr)
+#' flair <- readnii('path/to/flair', reorient = FALSE) 
+#' brain_mask <- readnii('path/to/brain_mask', reorient = FALSE) 
+#' voxel_selection_mask <- voxel_selection(flair, brain_mask, cutoff = .85) }
 #' @import oro.nifti
 #' @export
 voxel_selection <- function(flair, ##the flair volume

@@ -1,6 +1,6 @@
 #' @title OASIS Training Data Frame
 #' @description This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes 
-#' as well as binary masks of lesions. The function can create a brian mask for the data (or the user can supply a brain mask), 
+#' as well as binary masks of lesions. The function can create a brain mask for the data (or the user can supply a brain mask), 
 #' can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.  
 #' @param flair FLAIR volume of class \code{\link{nifti}}
 #' @param t1 T1 volume of class \code{\link{nifti}}
@@ -16,17 +16,17 @@
 #' using an alternative normalization 
 #' @param slices vector of desired slices to train on, if \code{NULL} 
 #' then train over the entire brain mask 
-#' @param orientation string value telling which oreintation the 
+#' @param orientation string value telling which orientation the 
 #' training slices are specified in, can take the values of "axial", 
 #' "sagittal", or "coronal"
 #' @param return_preproc is a logical value that indicates whether 
-#' the preprcoessed images should be returned 
+#' the preprocessed images should be returned 
 #' @param cores numeric indicating the number of cores to be used 
 #' (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
 #' @import stats
-#' @return If \code{return_preproc = FALSE} the function reutrns a 
+#' @return If \code{return_preproc = FALSE} the function returns a 
 #' \code{data.frame} for use with the \code{\link{oasis_training}} function. 
 #' Otherwise, the function returns a list containing: 
 #' a \code{data.frame} for use with the \code{\link{oasis_training}} function, 

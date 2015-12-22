@@ -18,7 +18,7 @@
 #' using an alternative normalization 
 #' @param model an object of class \code{\link{glm}} used to make the OASIS predictions 
 #' @param return_preproc is a logical value that indicates whether the 
-#' preprcoessed images should be returned, if \code{NULL} 
+#' preprocessed images should be returned, if \code{NULL} 
 #' then the model from the OASIS paper will be used 
 #' @param binary logical indicating whether a binary map 
 #' should be returned by thresholding the probability map
@@ -28,7 +28,7 @@
 #' used (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
-#' @return If \code{return_preproc = FALSE} the function reutrns a 
+#' @return If \code{return_preproc = FALSE} the function returns a 
 #' volume of class \code{\link{nifti}} containing the OASIS probability for each voxel. 
 #' Otherwise, the function returns a list of volumes: 
 #' the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,

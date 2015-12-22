@@ -1,7 +1,8 @@
 #' @title OASIS Image Preprocessing 
 #' @description This function does the required preprocessing for OASIS for the FLAIR, T2, 
 #' T1, and PD volumes using FSL through fslr.  
-#' The preprcoessing steps are (1) inhomogenity correct using \code{\link{fsl_biascorrect}}
+#' The preprocessing steps are 
+#' (1) inhomogeneity correct using \code{\link{fsl_biascorrect}}
 #' and (2) rigid registration using \code{\link{flirt}} to the T1 space.  
 #' @param flair FLAIR volume of class \code{\link{nifti}}
 #' @param t1 T1 volume of class \code{\link{nifti}}
@@ -62,7 +63,7 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   
   study <- mclapply(study, mask_img, mask = brain_mask) 
   
-  ## inhomogenity correction for all four modalities using fsl bias correct
+  ## inhomogeneity correction for all four modalities using fsl bias correct
   if (verbose) {
     message("# Running Inhomogeneity Correction\n")
   }

@@ -30,7 +30,8 @@ space of the T1 volume.
 \description{
 This function does the required preprocessing for OASIS for the FLAIR, T2, 
 T1, and PD volumes using FSL through fslr.  
-The preprcoessing steps are (1) inhomogenity correct using \code{\link{fsl_biascorrect}}
+The preprocessing steps are 
+(1) inhomogeneity correct using \code{\link{fsl_biascorrect}}
 and (2) rigid registration using \code{\link{flirt}} to the T1 space.
 }
 \examples{
