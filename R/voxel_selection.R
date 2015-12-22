@@ -5,8 +5,9 @@
 #' @param brain_mask brain mask of class nifti
 #' @param cutoff the percentile cutoff for the thresholding, 
 #' passed to \code{\link{quantile}}
-#' @return Returns the voxel slection mask as an object of class nifti.  
+#' @return Returns the voxel selection mask as an object of class nifti.  
 #' @examples \dontrun{
+#' library(oro.nifti)
 #' flair <- readNIfTI('path/to/flair', reorient = FALSE) 
 #' brain_mask <- readNIfTI('path/to/brain_mask', reorient = FALSE) 
 #' voxel_selection_mask <- oasis_preproc(flair, brain_mask, cutoff = .85) }
@@ -21,7 +22,7 @@ voxel_selection <- function(flair, ##the flair volume
   cutpoint <- quantile(flair[brain_mask == 1], cutoff)
   outmask <-  flair > cutpoint
   outmask <- as.nifti(outmask * brain_mask) 
-  outmask <- datatype(outmask, trybyte = TRUE)
+  outmask <- datatyper(outmask, trybyte = TRUE)
   ##return the binary mask of the flair values above the cutpoint 
   return(outmask) 
 }

@@ -9,39 +9,53 @@ oasis_train_dataframe(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
   orientation = "axial", return_preproc = FALSE, cores = 1)
 }
 \arguments{
-\item{flair}{flair volume of class nifti}
+\item{flair}{FLAIR volume of class \code{\link{nifti}}}
 
-\item{t1}{t1 volume of class nifti}
+\item{t1}{T1 volume of class \code{\link{nifti}}}
 
-\item{t2}{t2 volume of class nifti}
+\item{t2}{T2 volume of class \code{\link{nifti}}}
 
-\item{pd}{pd volume of class nifti}
+\item{pd}{PD volume of class \code{\link{nifti}}}
 
-\item{gold_standard}{gold standard lesion segmentation mask of class nifti}
+\item{gold_standard}{gold standard lesion segmentation mask of class \code{\link{nifti}}}
 
-\item{brain_mask}{brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr}
+\item{brain_mask}{brain mask of class \code{\link{nifti}}, if NULL a brain mask will be created using \code{\link{fslbet}}}
 
-\item{preproc}{is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS}
+\item{preproc}{is a logical value that determines whether to call the \code{\link{oasis_preproc}} function 
+and performs the necessary preprocessing steps for OASIS}
 
-\item{normalize}{is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
+\item{normalize}{is a logical value that determines whether 
+to perform z-score normalization of the image over the brain mask, 
+should be \code{TRUE} unless you train model
 using an alternative normalization}
 
-\item{slices}{vector of desired slices to train on, if NULL then train over the entire brain mask}
+\item{slices}{vector of desired slices to train on, if \code{NULL} 
+then train over the entire brain mask}
 
-\item{orientation}{string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"}
+\item{orientation}{string value telling which oreintation the 
+training slices are specified in, can take the values of "axial", 
+"sagittal", or "coronal"}
 
-\item{return_preproc}{is a logical value that indicates whether the preprcoessed images should be returned}
+\item{return_preproc}{is a logical value that indicates whether 
+the preprcoessed images should be returned}
 
-\item{cores}{numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)}
+\item{cores}{numeric indicating the number of cores to be used 
+(no more than 4 is useful for this software implementation)}
 }
 \value{
-If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
-Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
+If \code{return_preproc = FALSE} the function reutrns a 
+\code{data.frame} for use with the \code{\link{oasis_training}} function. 
+Otherwise, the function returns a list containing: 
+a \code{data.frame} for use with the \code{\link{oasis_training}} function, 
+the FLAIR volume, the T1 volume, the T2 volume,
 the PD volume, the brain mask for the subject, and the voxel selection mask.
 }
 \description{
 This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes 
 as well as binary masks of lesions. The function can create a brian mask for the data (or the user can supply a brain mask), 
 can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.
+}
+\seealso{
+\code{\link{oasis_training}}
 }
 

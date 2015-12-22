@@ -1,7 +1,7 @@
 #' @title OASIS glm Object 
 #'
-#' @description A glm object containing the OASIS model from the OASIS paper. 
+#' @description A \code{glm} object containing the OASIS model from the OASIS paper. 
 #' @name oasis_model
 #' @docType data
-#' @format A glm object 
-NULL
+#' @format A \code{glm} object 
+"oasis_model"

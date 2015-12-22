@@ -2,9 +2,15 @@ Package: oasis
 Type: Package
 Title: Multiple Sclerosis Lesion Segmentation using Magnetic Resonance Imaging
     (MRI)
-Version: 1.0
-Date: 2015-11-04
-Author: Elizabeth M. Sweeney, John Muschelli, Russell T. Shinohara
+Version: 0.99.1
+Date: 2015-12-22
+Authors@R: c(person(given = "Elizabeth M.", "Sweeney",  
+  email = "emsweene@jhsph.edu", role = c("aut", "cre")), 
+  person(given = "John", family = "Muschelli", email = "muschellij2@gmail.com", 
+  role = c("aut")), 
+  person(  given = "R. Taki", family = "Shinohara", 
+  email = "rshi@mail.med.upenn.edu", 
+  role = c("aut")))
 Maintainer: Elizabeth M. Sweeney <emsweene@jhsph.edu>
 Description: Trains and makes predictions from the OASIS method, described in
     detail in the paper "OASIS is Automated Statistical Inference for Segmentation,
@@ -19,12 +25,12 @@ Description: Trains and makes predictions from the OASIS method, described in
     OASIS model from the OASIS paper if no gold standard lesion segmentation masks
     are avaliable.
 Depends:
-    fslr,
-    oro.nifti,
+    fslr
 Imports:
     stats,
-    parallel
+    parallel,
+    oro.nifti
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

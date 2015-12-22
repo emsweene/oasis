@@ -2,24 +2,27 @@
 % Please edit documentation in R/correct_image_dim.R
 \name{correct_image_dim}
 \alias{correct_image_dim}
-\title{Image Dimmension Correction}
+\title{Image Dimension Correction}
 \usage{
 correct_image_dim(image, dim = 3)
 }
 \arguments{
-\item{image}{volume of class nifti}
+\item{image}{volume of class \code{\link{nifti}}}
 
 \item{dim}{scalar value of desired image dimmension}
 }
 \value{
-Reutrns a volume of class nifti of desired dimmension.
+Returns a volume of class \code{\link{nifti}} of desired dimension.
 }
 \description{
-This function takes an image and drops dimmensions until the volume is a user specified dimmension.
+This function takes an image and drops dimensions 
+until the volume is a user specified dimmension.
 }
 \examples{
 \dontrun{
-flair <- readNIfTI('path/to/flair', reorient = FALSE) 
-correct_image_dim <- function(flair, dim = 3) } 
+library(fslr)
+flair <- readnii('path/to/flair', reorient = FALSE) 
+flair <- correct_image_dim(flair, dim = 3) 
+} 
 }
 

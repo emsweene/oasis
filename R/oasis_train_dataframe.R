@@ -2,25 +2,37 @@
 #' @description This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes 
 #' as well as binary masks of lesions. The function can create a brian mask for the data (or the user can supply a brain mask), 
 #' can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.  
-#' @param flair flair volume of class nifti
-#' @param t1 t1 volume of class nifti
-#' @param t2 t2 volume of class nifti
-#' @param pd pd volume of class nifti
-#' @param gold_standard gold standard lesion segmentation mask of class nifti
-#' @param brain_mask brain mask of class nifti, if NULL a brain mask will be created using fsl BET through fslr
-#' @param preproc is a logical value that determines whether to call the oasis_preproc function and performs the necessary preprocessing steps for OASIS
-#' @param normalize is a logical value that determines whether to perform z-score normalization of the image over the brain mask, should be TRUE unless you train model
+#' @param flair FLAIR volume of class \code{\link{nifti}}
+#' @param t1 T1 volume of class \code{\link{nifti}}
+#' @param t2 T2 volume of class \code{\link{nifti}}
+#' @param pd PD volume of class \code{\link{nifti}}
+#' @param gold_standard gold standard lesion segmentation mask of class \code{\link{nifti}}
+#' @param brain_mask brain mask of class \code{\link{nifti}}, if NULL a brain mask will be created using \code{\link{fslbet}} 
+#' @param preproc is a logical value that determines whether to call the \code{\link{oasis_preproc}} function 
+#' and performs the necessary preprocessing steps for OASIS
+#' @param normalize is a logical value that determines whether 
+#' to perform z-score normalization of the image over the brain mask, 
+#' should be \code{TRUE} unless you train model
 #' using an alternative normalization 
-#' @param slices vector of desired slices to train on, if NULL then train over the entire brain mask 
-#' @param orientation string value telling which oreintation the training slices are specified in, can take the values of  "axial", "sagittal", or "coronal"
-#' @param return_preproc is a logical value that indicates whether the preprcoessed images should be returned 
-#' @param cores numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)
+#' @param slices vector of desired slices to train on, if \code{NULL} 
+#' then train over the entire brain mask 
+#' @param orientation string value telling which oreintation the 
+#' training slices are specified in, can take the values of "axial", 
+#' "sagittal", or "coronal"
+#' @param return_preproc is a logical value that indicates whether 
+#' the preprcoessed images should be returned 
+#' @param cores numeric indicating the number of cores to be used 
+#' (no more than 4 is useful for this software implementation)
 #' @import fslr
 #' @import parallel
 #' @import stats
-#' @return If return_preproc = FALSE the function reutrns a dataframe for use with the oasis_training function. 
-#' Otherwise, the function returns a list containing: a dataframe for use with the oasis_training function, the FLAIR volume, the T1 volume, the T2 volume,
+#' @return If \code{return_preproc = FALSE} the function reutrns a 
+#' \code{data.frame} for use with the \code{\link{oasis_training}} function. 
+#' Otherwise, the function returns a list containing: 
+#' a \code{data.frame} for use with the \code{\link{oasis_training}} function, 
+#' the FLAIR volume, the T1 volume, the T2 volume,
 #' the PD volume, the brain mask for the subject, and the voxel selection mask. 
+#' @seealso \code{\link{oasis_training}}
 #' @export 
 oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
@@ -54,7 +66,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     preprocess <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, cores = cores)
     oasis_study <- preprocess[c("flair","t1", "t2", "pd")]
     brain_mask <- preprocess[[5]]
-  }else{
+  } else{
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }
@@ -62,7 +74,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     ## create a brain mask if not supplied
     brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
     brain_mask <- brain_mask > 0
-    brain_mask <- datatype(brain_mask, trybyte = TRUE)
+    brain_mask <- datatyper(brain_mask, trybyte = TRUE)
   } 
   
   ##adjust brain mask for OASIS 

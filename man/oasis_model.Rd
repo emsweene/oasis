@@ -4,8 +4,12 @@
 \name{oasis_model}
 \alias{oasis_model}
 \title{OASIS glm Object}
-\format{A glm object}
-\description{
-A glm object containing the OASIS model from the OASIS paper.
+\format{A \code{glm} object}
+\usage{
+oasis_model
 }
+\description{
+A \code{glm} object containing the OASIS model from the OASIS paper.
+}
+\keyword{datasets}
 
