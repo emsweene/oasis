@@ -67,7 +67,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   
   ##image preproceesing 
-  if(preproc == TRUE){
+  if (preproc == TRUE) {
     ## the image preproceesing 
     preprocess <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, 
                                 cores = cores,
@@ -174,7 +174,8 @@ oasis_predict <- function(flair, ##flair volume of class nifti
     return(list(oasis_map = prob_map, flair = flair, 
                 t1 = t1, t2 = t2,
                 pd = pd, brain_mask = brain_mask, 
-                voxel_selection = top_voxels, binary_map = binary_map,
+                voxel_selection = top_voxels, 
+                binary_map = binary_map,
                 unsmoothed_map = predictions_nifti))
   }   
   if (return_preproc == FALSE & binary == TRUE) {

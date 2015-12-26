@@ -33,7 +33,7 @@
 #' the FLAIR volume, the T1 volume, the T2 volume,
 #' the PD volume, the brain mask for the subject, and the voxel selection mask. 
 #' @seealso \code{\link{oasis_training}}
-#' @export 
+#' @export
 oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
                           t2, ##t2 volume of class nifti
@@ -63,7 +63,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   ##image preproceesing 
   if(preproc == TRUE){
     ## the image preproceesing 
-    preprocess <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, cores = cores)
+    preprocess <- oasis_preproc(flair = flair, t1 = t1, 
+                                t2 = t2, pd = pd, cores = cores)
     oasis_study <- preprocess[c("flair","t1", "t2", "pd")]
     brain_mask <- preprocess[[5]]
   } else{
@@ -88,19 +89,35 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     oasis_study <- mclapply(oasis_study, function (x) zscore_img(x, brain_mask, margin = NULL), mc.cores = cores)
   }
   
-  ## smooth the images using fslsmooth from the fslr package 
-  oasis_study <- append(oasis_study, mclapply(oasis_study, function(x) fslsmooth(x, sigma = 10, mask = brain_mask, retimg = TRUE), 
-    mc.cores = cores))
-  oasis_study <- append(oasis_study, mclapply(oasis_study[1:4], function(x) fslsmooth(x, sigma = 20, mask = brain_mask, 
-    retimg = TRUE), mc.cores = cores))
-  
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
                                 brain_mask = brain_mask, 
                                 cutoff = .85)
-
   
-  oasis_study[[c(length(oasis_study) + 1)]] <- gold_standard
+  orig_study = oasis_study
+  names(orig_study) <- c("FLAIR", "T1", "T2", "PD")
+  
+  ## smooth the images using fslsmooth from the fslr package 
+  smooth <- mclapply(orig_study, fslsmooth,
+                     sigma = 10, 
+                     mask = brain_mask, 
+                     retimg = TRUE, 
+                     smooth_mask = TRUE,
+                     mc.cores = cores)
+  names(smooth) = paste0(names(smooth), "_10")
+  oasis_study = c(oasis_study, smooth)
+  
+  
+  smooth <- mclapply(orig_study, fslsmooth,
+                     sigma = 20, 
+                     mask = brain_mask, 
+                     retimg = TRUE, 
+                     smooth_mask = TRUE,
+                     mc.cores = cores)
+  names(smooth) = paste0(names(smooth), "_20")
+  oasis_study = c(oasis_study, smooth)  
+
+  oasis_study$GoldStandard <- gold_standard
 
   if(is.null(slices)){
     oasis_study <- lapply(oasis_study, function(x) x[top_voxels == 1])
@@ -121,8 +138,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   }
   
   oasis_dataframe <- do.call(cbind.data.frame, oasis_study)
-  names <- c("FLAIR", "T1", "T2", "PD")
-  colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"),  "GoldStandard")
+#   names <- c("FLAIR", "T1", "T2", "PD")
+#   colnames(oasis_dataframe) <-  c(names, paste0(names, "_10"),  paste0(names, "_20"),  "GoldStandard")
+  
   
   if(return_preproc == TRUE){
     return(list(oasis_dataframe = oasis_dataframe, flair = flair, 

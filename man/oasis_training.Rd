@@ -23,6 +23,7 @@ produced by the function \code{\link{oasis_train_dataframe}}
 }
 \examples{
 \dontrun{
-my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
+my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  
+}
 }
 

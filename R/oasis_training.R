@@ -10,7 +10,8 @@
 #' @return Returns a \code{glm} object containing the trained OASIS 
 #' coefficients to be used by the function \code{\link{oasis_predict}}.
 #' @examples \dontrun{
-#' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  }
+#' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)  
+#' }
 #' @import oro.nifti
 oasis_training <- function(..., ##dataframes from function 
                            remove_preproc  = FALSE) 
@@ -23,9 +24,10 @@ oasis_training <- function(..., ##dataframes from function
   train_vectors_multi <- as.data.frame(train_vectors_multi)
   ##fit the oasis model 
   oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
-                       FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD 
-                     + T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 
-                     + T1_20 *T1 , data = train_vectors_multi, 
+                      FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD +
+                      T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 +
+                      T1_20 *T1, 
+                     data = train_vectors_multi, 
                      family = binomial)
   
   ##clean up the oasis model 
