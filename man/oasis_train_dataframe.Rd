@@ -4,7 +4,7 @@
 \alias{oasis_train_dataframe}
 \title{OASIS Training Data Frame}
 \usage{
-oasis_train_dataframe(flair, t1, t2, pd, gold_standard = NULL,
+oasis_train_dataframe(flair, t1, t2, pd = NULL, gold_standard = NULL,
   brain_mask = NULL, preproc = FALSE, normalize = TRUE, slices = NULL,
   orientation = c("axial", "coronal", "sagittal"), return_preproc = FALSE,
   cores = 1, verbose = TRUE)

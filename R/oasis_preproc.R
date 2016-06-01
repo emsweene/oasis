@@ -28,7 +28,7 @@
 oasis_preproc <- function(flair, #flair volume of class nifti
                           t1, # t1 volume of class nifti
                           t2, # t2 volume of class nifti
-                          pd, # pd volume of class nifti
+                          pd = NULL, # pd volume of class nifti
                           brain_mask = NULL,
                           verbose = TRUE,
                           cores = 1
@@ -38,13 +38,20 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   # study = check_nifti(study)
   
+  # REMOVE NULL
+  nulls = sapply(study, is.null)
+  study = study[!nulls]
+  
   if (verbose) {
     message("Rigidly Registering Data to T1 Space\n")
   } 
   
+  seqs = c("flair","t2", "pd")
+  seqs = intersect(names(study), seqs)
+  
   ##rigidly register to the flair, t2, and pd to the t1 using fsl flirt 
-  study[c("flair","t2", "pd")] <- mclapply(
-    study[c("flair","t2", "pd")], function(x)  {
+  study[seqs] <- mclapply(
+    study[seqs], function(x)  {
     tfile = tempfile(fileext = ".mat")
     flirt(infile = x, omat = tfile,
           reffile = study$t1, 

@@ -4,7 +4,7 @@
 \alias{oasis_preproc}
 \title{OASIS Image Preprocessing}
 \usage{
-oasis_preproc(flair, t1, t2, pd, brain_mask = NULL, verbose = TRUE,
+oasis_preproc(flair, t1, t2, pd = NULL, brain_mask = NULL, verbose = TRUE,
   cores = 1)
 }
 \arguments{

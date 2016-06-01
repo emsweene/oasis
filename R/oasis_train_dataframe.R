@@ -44,7 +44,7 @@
 oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                                   t1, ##t1 volume of class nifti
                                   t2, ##t2 volume of class nifti
-                                  pd, ##pd volume of class nifti
+                                  pd = NULL, ##pd volume of class nifti
                                   gold_standard = NULL, ##gold standard mask of class nifti
                                   brain_mask = NULL, ##brain mask of class nifti
                                   preproc = FALSE, ##option to preprocess the data
@@ -59,16 +59,30 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   if (verbose) {
     message("Checking File inputs")
   }
-  flair = check_nifti(flair)
-  t1 = check_nifti(t1)
-  t2 = check_nifti(t2)
-  pd = check_nifti(pd)
+  check_nifti2 = function(x) {
+    if (is.null(x)) {
+      return(NULL)
+    } else {
+      return(check_nifti(x))
+    }
+  }
+  flair = check_nifti2(flair)
+  t1 = check_nifti2(t1)
+  t2 = check_nifti2(t2)
+  pd = check_nifti2(pd)
   
+  correct_image_dim2 = function(x) {
+    if (is.null(x)) {
+      return(NULL)
+    } else {
+      return(correct_image_dim(x))
+    }
+  }  
   ##correct image dimmension
-  flair <- correct_image_dim(flair)
-  t1 <- correct_image_dim(t1)
-  t2 <- correct_image_dim(t2)
-  pd <- correct_image_dim(pd)
+  flair <- correct_image_dim2(flair)
+  t1 <- correct_image_dim2(t1)
+  t2 <- correct_image_dim2(t2)
+  pd <- correct_image_dim2(pd)
   
   ##image preproceesing 
   if (preproc == TRUE) {
@@ -77,7 +91,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     }
     ## the image preproceesing 
     preprocess <- oasis_preproc(flair = flair, 
-                                t1 = t1, t2 = t2, pd = pd, 
+                                t1 = t1, 
+                                t2 = t2, 
+                                pd = pd, 
                                 cores = cores,
                                 brain_mask = brain_mask,
                                 verbose = verbose)
@@ -87,6 +103,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }
+  # REMOVE NULL
+  nulls = sapply(oasis_study, is.null)
+  oasis_study = oasis_study[!nulls]
   
   ###############################
   # Making brain mask if one not needed

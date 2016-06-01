@@ -14,8 +14,8 @@ oasis_training(..., formula = GoldStandard ~ FLAIR_10 * FLAIR + FLAIR_20 *
 
 \item{formula}{formula to be fit by glm model}
 
-\item{remove_preproc}{a logical stating if preprocessed volumes 
-need to be removed from the \code{data.frame}s}
+\item{remove_preproc}{a logical stating if \code{oasis_dataframe} needs to be 
+extracted from the list of objects.  Will call \code{list$oasis_dataframe}}
 }
 \value{
 Returns a \code{glm} object containing the trained OASIS 
@@ -23,7 +23,8 @@ coefficients to be used by the function \code{\link{oasis_predict}}.
 }
 \description{
 This function trains the OASIS model from a \code{data.frame} 
-produced by the function \code{\link{oasis_train_dataframe}}
+produced by an element from the output of the 
+function \code{\link{oasis_train_dataframe}}
 }
 \examples{
 \dontrun{

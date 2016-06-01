@@ -1,11 +1,12 @@
 #' @title OASIS Training
 #' @description This function trains the OASIS model from a \code{data.frame} 
-#' produced by the function \code{\link{oasis_train_dataframe}} 
+#' produced by an element from the output of the 
+#' function \code{\link{oasis_train_dataframe}} 
 #' @param ... \code{data.frame}(s) produced by the 
 #' \code{\link{oasis_train_dataframe}} function 
 #' @param formula formula to be fit by glm model
-#' @param remove_preproc a logical stating if preprocessed volumes 
-#' need to be removed from the \code{data.frame}s 
+#' @param remove_preproc a logical stating if \code{oasis_dataframe} needs to be 
+#' extracted from the list of objects.  Will call \code{list$oasis_dataframe}
 #' @import fslr
 #' @export 
 #' @return Returns a \code{glm} object containing the trained OASIS 
