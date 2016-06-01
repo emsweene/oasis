@@ -44,7 +44,7 @@
 oasis_predict <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
                           t2, ##t2 volume of class nifti
-                          pd, ##pd volume of class nifti
+                          pd = NULL, ##pd volume of class nifti
                           brain_mask = NULL, ##brain mask of class nifti
                           preproc = FALSE, ##option to preprocess the data
                           normalize = TRUE, ##option to normalize 
