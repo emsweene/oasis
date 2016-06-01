@@ -29,11 +29,10 @@
 #' @param verbose print diagnostic messages
 #' @import fslr
 #' @import parallel
-#' @return If \code{return_preproc = FALSE} the function returns a 
-#' volume of class \code{\link{nifti}} containing the OASIS probability for each voxel. 
-#' Otherwise, the function returns a list of volumes: 
-#' the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
-#' the PD volume, the brain mask for the subject, and the voxel selection mask. 
+#' @return A list of volumes: 
+#' the OASIS probability map, the preprocessed volumes (if \code{return_preproc = TRUE}),
+#' the brain mask for the subject, the voxel selection mask, and a thresholded,
+#' binary mask (if \code{binary = TRUE}) . 
 #' @examples \dontrun{
 #' library(fslr)
 #' flair <- readnii('path/to/flair', reorient = FALSE) 
@@ -65,9 +64,13 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                             normalize = normalize,
                             verbose = verbose,
                             cores = cores,
-                            return_preproc = FALSE)
+                            return_preproc = TRUE)
   
   oasis_dataframe = L$oasis_dataframe
+  brain_mask = L$oasis_dataframe
+  top_voxels = L$top_voxels
+  preproc = L$preproc
+  rm(list = "L")
   
 
   if (verbose) {
@@ -84,9 +87,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                            type = 'response')    
   }
   
-  brain_mask = L$oasis_dataframe
-  top_voxels = L$top_voxels
-  
+
   ##put the predictions onto the brain 
   predictions_nifti <- niftiarr(brain_mask, 0) 
   predictions_nifti[top_voxels == 1] <- predictions
@@ -99,6 +100,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                         mask = brain_mask, retimg = TRUE,
                         smooth_mask = TRUE)
   
+  binary_map = NULL
   if (binary == TRUE) {
     if (verbose) {
       message("Thresholding Smoothed Prediction")
@@ -107,28 +109,23 @@ oasis_predict <- function(flair, ##flair volume of class nifti
     binary_map[prob_map > threshold] <- 1
     binary_map[prob_map <= threshold] <- 0
   }
-  if (return_preproc == TRUE & binary == FALSE) {
-    return(list(oasis_map = prob_map, flair = L$preproc$flair, 
-                t1 = L$preproc$t1, t2 = L$preproc$t2,
-                pd = L$preproc$pd, brain_mask = brain_mask, 
-                voxel_selection = top_voxels,
-                unsmoothed_map = predictions_nifti))
-  } 
-  if (return_preproc == TRUE & binary == TRUE) {
-    return(list(oasis_map = prob_map, flair = L$preproc$flair, 
-                t1 = L$preproc$t1, t2 = L$preproc$t2,
-                pd = L$preproc$pd, brain_mask = brain_mask, 
-                voxel_selection = top_voxels, 
-                binary_map = binary_map,
-                unsmoothed_map = predictions_nifti))
-  }   
-  if (return_preproc == FALSE & binary == TRUE) {
-    return(list(oasis_map = prob_map, 
-                binary_map = binary_map,
-                unsmoothed_map = predictions_nifti))
-  } else{
-    return(prob_map)
+  L = list(oasis_map = prob_map, 
+           flair = preproc$flair, 
+           t1 = preproc$t1, t2 = preproc$t2,
+           pd = preproc$pd, 
+           brain_mask = brain_mask, 
+           voxel_selection = top_voxels,
+           binary_map = binary_map,
+           unsmoothed_map = predictions_nifti)
+  if (!return_preproc) {
+    L$flair = L$t1 = L$t2 = L$pd = NULL
   }
+  
+  if (!binary) {
+    L$binary_map = NULL
+  }
+  
+  return(L)
   
 }
 

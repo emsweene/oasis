@@ -50,11 +50,10 @@ used (no more than 4 is useful for this software implementation)}
 \item{verbose}{print diagnostic messages}
 }
 \value{
-If \code{return_preproc = FALSE} the function returns a 
-volume of class \code{\link{nifti}} containing the OASIS probability for each voxel. 
-Otherwise, the function returns a list of volumes: 
-the OASIS probability map, the FLAIR volume, the T1 volume, the T2 volume,
-the PD volume, the brain mask for the subject, and the voxel selection mask.
+A list of volumes: 
+the OASIS probability map, the preprocessed volumes (if \code{return_preproc = TRUE}),
+the brain mask for the subject, the voxel selection mask, and a thresholded,
+binary mask (if \code{binary = TRUE}) .
 }
 \description{
 This function creates the OASIS probability map from a single MRI study with FLAIR, T1, T2, and PD volumes.
