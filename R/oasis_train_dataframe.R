@@ -128,9 +128,16 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   if (verbose) {
     message("Eroding Brain Mask")
   }
-  brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
-  cutpoint <- quantile(oasis_study$flair[brain_mask == 1], probs = .15)
-  brain_mask[oasis_study$flair <= cutpoint] <- 0 
+  brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", 
+                         retimg = TRUE)
+
+  ##removing voxels below 15th quantile
+  brain_mask <- voxel_selection(flair = oasis_study$flair,
+                                brain_mask = brain_mask, 
+                                cutoff = .15)
+  
+  # cutpoint <- quantile(oasis_study$flair[brain_mask == 1], probs = .15)
+  # brain_mask[oasis_study$flair <= cutpoint] <- 0 
   
   
   

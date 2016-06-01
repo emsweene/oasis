@@ -35,14 +35,15 @@ voxel_selection <- function(flair, ##the flair volume
                             cutoff ## the percentile cutoff for the thresholding 
                             ){
   stopifnot(length(cutoff) == 1)
-  arr = array(brain_mask, dim = dim(brain_mask))
+  # arr = array(brain_mask, dim = dim(brain_mask))
+  arr = as(brain_mask, Class = "array")
   class(arr) = "numeric"
   stopifnot(all(c(arr) %in% c(0, 1)))
   ##find the value to threshold the flair volume at 
-  cutpoint <- quantile(flair[brain_mask == 1], probs = cutoff)
-  outmask <-  flair > cutpoint
-  outmask <- as.nifti(outmask * brain_mask) 
-  outmask <- datatyper(outmask, trybyte = TRUE)
+  cutpoint  <-   quantile(flair[brain_mask == 1], probs = cutoff)
+  outmask   <-    flair > cutpoint
+  outmask   <-    mask_img(outmask, brain_mask) 
+  outmask   <-    datatyper(outmask, trybyte = TRUE)
   ##return the binary mask of the flair values above the cutpoint 
   return(outmask) 
 }
