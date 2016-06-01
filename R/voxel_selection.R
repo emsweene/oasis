@@ -39,7 +39,7 @@ voxel_selection <- function(flair, ##the flair volume
   class(arr) = "numeric"
   stopifnot(all(c(arr) %in% c(0, 1)))
   ##find the value to threshold the flair volume at 
-  cutpoint <- quantile(flair[brain_mask == 1], cutoff)
+  cutpoint <- quantile(flair[brain_mask == 1], probs = cutoff)
   outmask <-  flair > cutpoint
   outmask <- as.nifti(outmask * brain_mask) 
   outmask <- datatyper(outmask, trybyte = TRUE)
