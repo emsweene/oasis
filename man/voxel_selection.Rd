@@ -24,20 +24,24 @@ procedure for OASIS.
 \examples{
 library(oasis)
 niis = tempfile(fileext = ".nii.gz")
-download.file(paste0("https://dl.dropbox.com/u/2785709/brainder", 
-"/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz"), 
- destfile = niis)
-flair <- readnii(niis) 
-if (have.fsl()) {
-brain_mask = fslbet(niis) > 0
-} else {
- ind = list(c(10L, 81L), c(12L, 101L), c(3L, 78L))
- all.ind = lapply(ind, function(x) seq(x[1], x[2]))
- brain_mask = niftiarr(flair, 0)
- eg = expand.grid(all.ind)
- eg = as.matrix(eg)
- brain_mask[eg] = 1
+if (require(downloader)) {
+ download(paste0("https://dl.dropbox.com/u/2785709/brainder", 
+         "/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz"), 
+         destfile = niis)
+ 
+ flair <- readnii(niis) 
+ if (have.fsl()) {
+   brain_mask = fslbet(niis) > 0
+ } else {
+   ind = list(c(10L, 81L), c(12L, 101L), c(3L, 78L))
+   all.ind = lapply(ind, function(x) seq(x[1], x[2]))
+   brain_mask = niftiarr(flair, 0)
+   eg = expand.grid(all.ind)
+   eg = as.matrix(eg)
+   brain_mask[eg] = 1
+ }
+ voxel_selection_mask <- voxel_selection(flair, 
+   brain_mask, cutoff = .85) 
 }
-voxel_selection_mask <- voxel_selection(flair, brain_mask, cutoff = .85) 
 }
 

@@ -30,6 +30,8 @@ Imports:
     stats,
     parallel,
     oro.nifti
+Suggests:
+    downloader
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
