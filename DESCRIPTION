@@ -2,8 +2,8 @@ Package: oasis
 Type: Package
 Title: Multiple Sclerosis Lesion Segmentation using Magnetic Resonance Imaging
     (MRI)
-Version: 0.99.5
-Date: 2015-12-26
+Version: 0.99.6
+Date: 2016-05-31
 Authors@R: c(person(given = "Elizabeth M.", "Sweeney",  
   email = "emsweene@jhsph.edu", role = c("aut", "cre")), 
   person(given = "John", family = "Muschelli", email = "muschellij2@gmail.com", 
