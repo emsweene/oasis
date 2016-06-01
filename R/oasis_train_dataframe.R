@@ -210,6 +210,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   oasis_dataframe = oasis_dataframe[ oasis_dataframe$top_voxels == 1, ]
   oasis_dataframe$top_voxels = NULL
   
+  ######################
+  # Keep only the slices indicated if slices aren't NULL
+  ######################  
   if (!is.null(slices)) {
     orientation = match.arg(orientation)
     
@@ -220,14 +223,16 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   cn = setdiff(cn, orientations)
   oasis_dataframe = oasis_dataframe[, cn]
   
-  
+  ######################
+  # Return Preproc
+  ######################
   if (!return_preproc) {
     orig_study = NULL
   }
   L = list(oasis_dataframe = oasis_dataframe, 
-           preproc = orig_study,
            brain_mask = brain_mask, 
            voxel_selection = top_voxels)
+  L$preproc = orig_study
   
   return(L)
 }
