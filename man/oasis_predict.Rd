@@ -6,7 +6,7 @@
 \usage{
 oasis_predict(flair, t1, t2, pd, brain_mask = NULL, preproc = FALSE,
   normalize = TRUE, model = NULL, return_preproc = FALSE,
-  binary = FALSE, threshold = 0.16, cores = 1)
+  binary = FALSE, threshold = 0.16, cores = 1, verbose = TRUE)
 }
 \arguments{
 \item{flair}{flair volume of class \code{\link{nifti}}}
@@ -46,6 +46,8 @@ for the probability map, with default of 0.16 for the OASIS paper}
 
 \item{cores}{numeric indicating the number of cores to be 
 used (no more than 4 is useful for this software implementation)}
+
+\item{verbose}{print diagnostic messages}
 }
 \value{
 If \code{return_preproc = FALSE} the function returns a 

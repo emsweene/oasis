@@ -26,6 +26,7 @@
 #' for the probability map, with default of 0.16 for the OASIS paper
 #' @param cores numeric indicating the number of cores to be 
 #' used (no more than 4 is useful for this software implementation)
+#' @param verbose print diagnostic messages
 #' @import fslr
 #' @import parallel
 #' @return If \code{return_preproc = FALSE} the function returns a 
@@ -52,33 +53,45 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                           return_preproc = FALSE, ##option to return the preprocessed data
                           binary = FALSE,
                           threshold = 0.16, 
-                          cores = 1
+                          cores = 1,
+                          verbose = TRUE
 ) {
-  flair = check_nifti(flair)
-  t1 = check_nifti(t1)
-  t2 = check_nifti(t2)
-  pd = check_nifti(pd)
-  
-  ##correct image dimmension
-  flair <- correct_image_dim(flair)
-  t1 <- correct_image_dim(t1)
-  t2 <- correct_image_dim(t2)
-  pd <- correct_image_dim(pd)
+  if (verbose) {
+    message("Checking File inputs")
+  }
+    flair = check_nifti(flair)
+    t1 = check_nifti(t1)
+    t2 = check_nifti(t2)
+    pd = check_nifti(pd)
+    
+    ##correct image dimmension
+    flair <- correct_image_dim(flair)
+    t1 <- correct_image_dim(t1)
+    t2 <- correct_image_dim(t2)
+    pd <- correct_image_dim(pd)
+
   
   
   ##image preproceesing 
   if (preproc == TRUE) {
+    if (verbose) {
+      message("OASIS Preprocessing")
+    }
     ## the image preproceesing 
     preprocess <- oasis_preproc(flair = flair, t1 = t1, t2 = t2, pd = pd, 
                                 cores = cores,
-                                brain_mask = brain_mask)
+                                brain_mask = brain_mask,
+                                verbose = verbose)
     oasis_study <- preprocess[c("flair","t1", "t2", "pd")]
     brain_mask <- preprocess$brain_mask
-  } else{
+  } else {
     ## no preprocessing  
     oasis_study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
   }
-  if (is.null(brain_mask) & !preproc){
+  if (is.null(brain_mask) & !preproc) {
+    if (verbose) {
+      message("Getting Brain Mask")
+    }    
     ## create a brain mask if not supplied
     brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
   } 
@@ -89,17 +102,26 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   ##adjust brain mask for OASIS 
   brain_mask <- correct_image_dim(brain_mask)
+  if (verbose) {
+    message("Eroding Brain Mask")
+  }
   brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", retimg = TRUE)
   cutpoint <- quantile(oasis_study$flair[brain_mask == 1], probs = .15)
   brain_mask[oasis_study$flair <= cutpoint] <- 0 
   
   ## the image normalization 
   if (normalize == TRUE) {
+    if (verbose) {
+      message("Normalizing Images using Z-score")
+    }    
     oasis_study <- lapply(oasis_study, zscore_img, 
                           mask = brain_mask, 
                           margin = NULL)
   }
   
+  if (verbose) {
+    message("Smoothing Images: Sigma = 10")
+  }    
   orig_study = oasis_study
   ## smooth the images using fslsmooth from the fslr package 
   smooth <- mclapply(orig_study, fslsmooth,
@@ -111,7 +133,9 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   names(smooth) = paste0(names(smooth), "_10")
   oasis_study = c(oasis_study, smooth)
   
-  
+  if (verbose) {
+    message("Smoothing Images: Sigma = 20")
+  }      
   smooth <- mclapply(orig_study, fslsmooth,
                      sigma = 20, 
                      mask = brain_mask, 
@@ -123,6 +147,9 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   
   rm(list = c("orig_study", "smooth"))
   
+  if (verbose) {
+    message("Voxel Selection Procedure")
+  }        
   ##create and apply the voxel selection mask 
   top_voxels <- voxel_selection(flair = oasis_study$flair,
                                 brain_mask = brain_mask, 
@@ -136,7 +163,10 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   colnames(oasis_dataframe) <-  c(names, 
                                   paste0(names, "_10"),  
                                   paste0(names, "_20"))
-  
+
+  if (verbose) {
+    message("Model Prediction")
+  }    
   ## make the model predictions 
   if (is.null(model)) {
     predictions <- predict( oasis::oasis_model, 
@@ -152,13 +182,18 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   predictions_nifti <- niftiarr(brain_mask, 0) 
   predictions_nifti[top_voxels == 1] <- predictions
   
-  
+  if (verbose) {
+    message("Smoothing Prediction")
+  }      
   ##smooth the probability map 
   prob_map <- fslsmooth(predictions_nifti, sigma = 1.25, 
                         mask = brain_mask, retimg = TRUE,
                         smooth_mask = TRUE)
   
   if (binary == TRUE) {
+    if (verbose) {
+      message("Thresholding Smoothed Prediction")
+    }       
     binary_map <- prob_map
     binary_map[prob_map > threshold] <- 1
     binary_map[prob_map <= threshold] <- 0
