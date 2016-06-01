@@ -56,6 +56,17 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                           cores = 1,
                           verbose = TRUE
 ) {
+  L = oasis_train_dataframe(flair = flair,
+                            t1 = t1,
+                            t2 = t2,
+                            pd = pd, 
+                            brain_mask = brain_mask,
+                            preproc = preproc,
+                            normalize = normalize,
+                            verbose = verbose,
+                            cores = cores,
+                            return_preproc = FALSE)
+  
   if (verbose) {
     message("Checking File inputs")
   }

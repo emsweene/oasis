@@ -4,9 +4,10 @@
 \alias{oasis_train_dataframe}
 \title{OASIS Training Data Frame}
 \usage{
-oasis_train_dataframe(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
-  preproc = FALSE, normalize = TRUE, slices = NULL,
-  orientation = "axial", return_preproc = FALSE, cores = 1)
+oasis_train_dataframe(flair, t1, t2, pd, gold_standard = NULL,
+  brain_mask = NULL, preproc = FALSE, normalize = TRUE, slices = NULL,
+  orientation = c("axial", "coronal", "sagittal"), return_preproc = FALSE,
+  cores = 1, verbose = TRUE)
 }
 \arguments{
 \item{flair}{FLAIR volume of class \code{\link{nifti}}}
@@ -17,11 +18,14 @@ oasis_train_dataframe(flair, t1, t2, pd, gold_standard, brain_mask = NULL,
 
 \item{pd}{PD volume of class \code{\link{nifti}}}
 
-\item{gold_standard}{gold standard lesion segmentation mask of class \code{\link{nifti}}}
+\item{gold_standard}{gold standard lesion segmentation mask of class 
+\code{\link{nifti}}}
 
-\item{brain_mask}{brain mask of class \code{\link{nifti}}, if NULL a brain mask will be created using \code{\link{fslbet}}}
+\item{brain_mask}{brain mask of class \code{\link{nifti}}, if NULL a 
+brain mask will be created using \code{\link{fslbet}}}
 
-\item{preproc}{is a logical value that determines whether to call the \code{\link{oasis_preproc}} function 
+\item{preproc}{is a logical value that determines whether to call the 
+\code{\link{oasis_preproc}} function 
 and performs the necessary preprocessing steps for OASIS}
 
 \item{normalize}{is a logical value that determines whether 
@@ -41,6 +45,8 @@ the preprocessed images should be returned}
 
 \item{cores}{numeric indicating the number of cores to be used 
 (no more than 4 is useful for this software implementation)}
+
+\item{verbose}{print diagnostic output}
 }
 \value{
 If \code{return_preproc = FALSE} the function returns a 
@@ -51,9 +57,12 @@ the FLAIR volume, the T1 volume, the T2 volume,
 the PD volume, the brain mask for the subject, and the voxel selection mask.
 }
 \description{
-This function creates the training vectors from a single MRI study that has FLAIR, T1, T2, and PD volumes 
-as well as binary masks of lesions. The function can create a brain mask for the data (or the user can supply a brain mask), 
-can preprocess the data, and the user may supply already normalized data if they wish to use an alternative normalization method.
+This function creates the training vectors from a single MRI 
+study that has FLAIR, T1, T2, and PD volumes 
+as well as binary masks of lesions. The function can create a brain mask 
+for the data (or the user can supply a brain mask), 
+can preprocess the data, and the user may supply already normalized data 
+if they wish to use an alternative normalization method.
 }
 \seealso{
 \code{\link{oasis_training}}

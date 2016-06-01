@@ -3,6 +3,7 @@
 #' produced by the function \code{\link{oasis_train_dataframe}} 
 #' @param ... \code{data.frame}(s) produced by the 
 #' \code{\link{oasis_train_dataframe}} function 
+#' @param formula formula to be fit by glm model
 #' @param remove_preproc a logical stating if preprocessed volumes 
 #' need to be removed from the \code{data.frame}s 
 #' @import fslr
@@ -14,19 +15,22 @@
 #' }
 #' @import oro.nifti
 oasis_training <- function(..., ##dataframes from function 
+                           formula = GoldStandard ~ FLAIR_10 *FLAIR  +
+                             FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD +
+                             T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 +
+                             T1_20 *T1,
                            remove_preproc  = FALSE) 
 {
   list_of_train_dataframes <- list(...)
   if (remove_preproc  == TRUE) {
-    list_of_train_dataframes  <- lapply( list_of_train_dataframes, function(x) x[[1]])
+    list_of_train_dataframes  <- lapply( list_of_train_dataframes, function(x) {
+      x$oasis_dataframe
+    })
   }
   train_vectors_multi <- do.call(rbind, list_of_train_dataframes)  
   train_vectors_multi <- as.data.frame(train_vectors_multi)
   ##fit the oasis model 
-  oasis_model <- glm(formula = GoldStandard ~ FLAIR_10 *FLAIR  +
-                      FLAIR_20*FLAIR + PD_10 *PD  + PD_20 *PD +
-                      T2_10 *T2 +  T2_20 *T2 + T1_10 *T1 +
-                      T1_20 *T1, 
+  oasis_model <- glm(formula = formula, 
                      data = train_vectors_multi, 
                      family = binomial)
   
