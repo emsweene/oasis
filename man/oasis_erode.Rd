@@ -14,4 +14,8 @@ oasis_erode(mask, mm = c(5, 5, 5))
 \value{
 Object of class \code{\link{nifti}}
 }
+\description{
+An alternative to using \code{fslerode} for mask erosion of a 
+brain mask by a box kernel defined by millimeter
+}
 

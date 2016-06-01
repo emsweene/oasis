@@ -1,5 +1,6 @@
 #' @title OASIS Erode Mask
-#' @description 
+#' @description An alternative to using \code{fslerode} for mask erosion of a 
+#' brain mask by a box kernel defined by millimeter
 #' @param mask object of class \code{\link{nifti}}
 #' @param mm Number of erosion (in millimeters)
 #'
