@@ -128,12 +128,13 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   if (verbose) {
     message("Eroding Brain Mask")
   }
-  brain_mask <- fslerode(brain_mask, kopts = "-kernel box 5x5x5", 
-                         retimg = TRUE)
-
+  ero_brain_mask <- fslerode(brain_mask, 
+                             kopts = "-kernel box 5x5x5", 
+                             retimg = TRUE)
+  
   ##removing voxels below 15th quantile
   brain_mask <- voxel_selection(flair = oasis_study$flair,
-                                brain_mask = brain_mask, 
+                                brain_mask = ero_brain_mask, 
                                 cutoff = .15)
   
   # cutpoint <- quantile(oasis_study$flair[brain_mask == 1], probs = .15)
@@ -238,7 +239,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   }
   L = list(oasis_dataframe = oasis_dataframe, 
            brain_mask = brain_mask, 
-           voxel_selection = top_voxels)
+           voxel_selection = top_voxels,
+           ero_brain_mask = ero_brain_mask)
   L$preproc = orig_study
   
   return(L)
