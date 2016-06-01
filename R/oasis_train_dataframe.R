@@ -30,6 +30,7 @@
 #' @param cores numeric indicating the number of cores to be used 
 #' (no more than 4 is useful for this software implementation)
 #' @param verbose print diagnostic output
+#' @param eroder Should \code{\link{fslerode}} or \code{\link{oasis_erode}} be used
 #' @import fslr
 #' @import parallel
 #' @import stats
@@ -53,7 +54,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                                   orientation = c("axial", "coronal", "sagittal"), 
                                   return_preproc = FALSE,
                                   cores = 1,
-                                  verbose = TRUE
+                                  verbose = TRUE,
+                                  eroder = c("fsl", "oasis")
 ) 
 { 
   if (verbose) {
@@ -128,9 +130,16 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   if (verbose) {
     message("Eroding Brain Mask")
   }
-  ero_brain_mask <- fslerode(brain_mask, 
-                             kopts = "-kernel box 5x5x5", 
-                             retimg = TRUE)
+  eroder = match.arg(eroder)
+  if (eroder == "fsl") {
+    ero_brain_mask <- fslerode(brain_mask, 
+                               kopts = "-kernel box 5x5x5", 
+                               retimg = TRUE)
+  } 
+  if (eroder == "oasis") {
+    ero_brain_mask <- oasis_erode(mask = brain_mask, 
+                                  mm = c(5,5,5))
+  }
   
   ##removing voxels below 15th quantile
   brain_mask <- voxel_selection(flair = oasis_study$flair,

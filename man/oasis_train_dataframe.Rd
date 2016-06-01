@@ -7,7 +7,7 @@
 oasis_train_dataframe(flair, t1, t2, pd = NULL, gold_standard = NULL,
   brain_mask = NULL, preproc = FALSE, normalize = TRUE, slices = NULL,
   orientation = c("axial", "coronal", "sagittal"), return_preproc = FALSE,
-  cores = 1, verbose = TRUE)
+  cores = 1, verbose = TRUE, eroder = c("fsl", "oasis"))
 }
 \arguments{
 \item{flair}{FLAIR volume of class \code{\link{nifti}}}
@@ -47,6 +47,8 @@ the preprocessed images should be returned}
 (no more than 4 is useful for this software implementation)}
 
 \item{verbose}{print diagnostic output}
+
+\item{eroder}{Should \code{\link{fslerode}} or \code{\link{oasis_erode}} be used}
 }
 \value{
 If \code{return_preproc = FALSE} the function returns a 
