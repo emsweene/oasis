@@ -4,10 +4,9 @@
 \alias{oasis_predict}
 \title{OASIS Prediction}
 \usage{
-oasis_predict(flair, t1, t2, pd = NULL, brain_mask = NULL,
-  preproc = FALSE, normalize = TRUE, model = NULL,
-  return_preproc = FALSE, binary = FALSE, threshold = 0.16, cores = 1,
-  verbose = TRUE)
+oasis_predict(flair, t1, t2, pd = NULL, brain_mask = NULL, model = NULL,
+  return_preproc = FALSE, binary = FALSE, threshold = 0.16,
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{flair}{flair volume of class \code{\link{nifti}}}
@@ -23,16 +22,6 @@ if \code{NULL} a brain mask will be created using \code{\link{fslbet}}.
 Note that provided brain masks should be in the same space as the T1 volume 
 if \code{preproc = TRUE}, as all volumes will be registered to this space}
 
-\item{preproc}{is a logical value that determines whether to 
-call \code{\link{oasis_preproc}} and performs the necessary preprocessing steps 
-for OASIS}
-
-\item{normalize}{is a logical value that determines whether to 
-perform z-score normalization using \code{\link{zscore_img}} 
-of the image over the brain mask, 
-should be \code{TRUE} unless you train model
-using an alternative normalization}
-
 \item{model}{an object of class \code{\link{glm}} used to make the OASIS predictions}
 
 \item{return_preproc}{is a logical value that indicates whether the 
@@ -45,10 +34,9 @@ should be returned by thresholding the probability map}
 \item{threshold}{numeric indicating the threshold value 
 for the probability map, with default of 0.16 for the OASIS paper}
 
-\item{cores}{numeric indicating the number of cores to be 
-used (no more than 4 is useful for this software implementation)}
-
 \item{verbose}{print diagnostic messages}
+
+\item{...}{options passed to \code{\link{oasis_train_dataframe}}}
 }
 \value{
 A list of volumes: 

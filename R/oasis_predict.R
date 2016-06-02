@@ -8,14 +8,6 @@
 #' if \code{NULL} a brain mask will be created using \code{\link{fslbet}}.  
 #' Note that provided brain masks should be in the same space as the T1 volume 
 #' if \code{preproc = TRUE}, as all volumes will be registered to this space 
-#' @param preproc is a logical value that determines whether to 
-#' call \code{\link{oasis_preproc}} and performs the necessary preprocessing steps 
-#' for OASIS
-#' @param normalize is a logical value that determines whether to 
-#' perform z-score normalization using \code{\link{zscore_img}} 
-#' of the image over the brain mask, 
-#' should be \code{TRUE} unless you train model
-#' using an alternative normalization 
 #' @param model an object of class \code{\link{glm}} used to make the OASIS predictions 
 #' @param return_preproc is a logical value that indicates whether the 
 #' preprocessed images should be returned, if \code{NULL} 
@@ -24,9 +16,8 @@
 #' should be returned by thresholding the probability map
 #' @param threshold numeric indicating the threshold value 
 #' for the probability map, with default of 0.16 for the OASIS paper
-#' @param cores numeric indicating the number of cores to be 
-#' used (no more than 4 is useful for this software implementation)
 #' @param verbose print diagnostic messages
+#' @param ... options passed to \code{\link{oasis_train_dataframe}}
 #' @import fslr
 #' @import parallel
 #' @return A list of volumes: 
@@ -46,25 +37,21 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                           t2, ##t2 volume of class nifti
                           pd = NULL, ##pd volume of class nifti
                           brain_mask = NULL, ##brain mask of class nifti
-                          preproc = FALSE, ##option to preprocess the data
-                          normalize = TRUE, ##option to normalize 
                           model = NULL, ##an OASIS model of class glm
                           return_preproc = FALSE, ##option to return the preprocessed data
                           binary = FALSE,
                           threshold = 0.16, 
-                          cores = 1,
-                          verbose = TRUE
+                          verbose = TRUE,
+                          ...
 ) {
   L = oasis_train_dataframe(flair = flair,
                             t1 = t1,
                             t2 = t2,
                             pd = pd, 
                             brain_mask = brain_mask,
-                            preproc = preproc,
-                            normalize = normalize,
                             verbose = verbose,
-                            cores = cores,
-                            return_preproc = TRUE)
+                            return_preproc = TRUE,
+                            ...)
   
   oasis_dataframe = L$oasis_dataframe
   brain_mask = L$oasis_dataframe
@@ -110,13 +97,13 @@ oasis_predict <- function(flair, ##flair volume of class nifti
     binary_map[prob_map <= threshold] <- 0
   }
   L = list(oasis_map = prob_map, 
+           binary_map = binary_map,
+           unsmoothed_map = predictions_nifti,
            flair = preproc$flair, 
            t1 = preproc$t1, t2 = preproc$t2,
            pd = preproc$pd, 
            brain_mask = brain_mask, 
-           voxel_selection = top_voxels,
-           binary_map = binary_map,
-           unsmoothed_map = predictions_nifti)
+           voxel_selection = top_voxels)
   if (!return_preproc) {
     L$flair = L$t1 = L$t2 = L$pd = NULL
   }
