@@ -12,7 +12,9 @@ oasis_erode = function(mask, mm = c(5,5,5)) {
   mask = check_nifti(mask)
   vd = voxdim(mask)
   
-  mm = rep(mm, length = 3 - length(mm))
+  if ( length(mm) < 3 ) {
+    mm = c(mm, rep(mm, length = 3 - length(mm)))
+  }
   
   nvoxels = round(mm/vd)
   # nvoxels = c(5,5,5)
