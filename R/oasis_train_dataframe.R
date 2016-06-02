@@ -177,6 +177,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   }    
   orig_study = oasis_study
   cnames = toupper(names(orig_study))
+  names(oasis_study) = cnames
   
   ## smooth the images using fslsmooth from the fslr package 
   smooth <- mclapply(orig_study, fslsmooth,
