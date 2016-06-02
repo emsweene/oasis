@@ -212,6 +212,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   #######################################
   oasis_dataframe = lapply(oasis_study, c)
   oasis_dataframe = as.data.frame(oasis_dataframe)
+  rownames(oasis_dataframe) = NULL
   
   ######################
   # Adding in slice indicators
