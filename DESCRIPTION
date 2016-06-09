@@ -27,6 +27,7 @@ Description: Trains and makes predictions from the OASIS method, described in
 Depends:
     fslr (>= 1.5.0)
 Imports:
+    methods,
     stats,
     parallel,
     oro.nifti,
