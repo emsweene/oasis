@@ -29,6 +29,7 @@
 #'    brain_mask, cutoff = .85) 
 #' }
 #' @import oro.nifti
+#' @importFrom methods as
 #' @export
 voxel_selection <- function(flair, ##the flair volume
                             brain_mask, ## a brain mask for the flair 

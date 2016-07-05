@@ -203,6 +203,9 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   
   rm(list = c("smooth"))
   
+  gold_standard = check_nifti2(gold_standard)
+  gold_standard = correct_image_dim2(gold_standard)
+  
   oasis_study$GoldStandard <- gold_standard
   
   oasis_study$top_voxels <- top_voxels
