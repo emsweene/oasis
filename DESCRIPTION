@@ -2,8 +2,8 @@ Package: oasis
 Type: Package
 Title: Multiple Sclerosis Lesion Segmentation using Magnetic Resonance Imaging
     (MRI)
-Version: 0.99.13.1
-Date: 2016-06-08
+Version: 1.0.0.0
+Date: 2016-07-06
 Authors@R: c(person(given = "Elizabeth M.", "Sweeney",  
   email = "emsweene@jhsph.edu", role = c("aut", "cre")), 
   person(given = "John", family = "Muschelli", email = "muschellij2@gmail.com", 
@@ -14,16 +14,15 @@ Authors@R: c(person(given = "Elizabeth M.", "Sweeney",
 Maintainer: Elizabeth M. Sweeney <emsweene@jhsph.edu>
 Description: Trains and makes predictions from the OASIS method, described in
     detail in the paper "OASIS is Automated Statistical Inference for Segmentation,
-    with applications to multiple sclerosis lesion segmentation in MRI" 
-    <doi:10.1016/j.nicl.2013.03.002>. OASIS is a method
-    for multiple sclerosis (MS) lesion segmentation on structural magnetic resonance
-    image (MRI) studies. OASIS creates probability maps of lesion presence using the
-    FLAIR, T2, T1, and PD structural MRI volumes. This packages allows for training
-    of the OASIS model and prediction of OASIS probability maps from a trained model
-    with user supplied studies that have a gold standard lesion segmentation masks.
-    The package will also create OASIS probability maps for MRI studies using the
-    OASIS model from the OASIS paper if no gold standard lesion segmentation masks
-    are available.
+    with applications to multiple sclerosis lesion segmentation in MRI" <doi:
+    10.1016/j.nicl.2013.03.002>. OASIS is a method for multiple sclerosis (MS)
+    lesion segmentation on structural magnetic resonance image (MRI) studies. OASIS
+    creates probability maps of lesion presence using the FLAIR, T2, T1, and PD
+    structural MRI volumes. This packages allows for training of the OASIS model
+    and prediction of OASIS probability maps from a trained model with user supplied
+    studies that have a gold standard lesion segmentation masks. The package will
+    also create OASIS probability maps for MRI studies using the OASIS model from
+    the OASIS paper if no gold standard lesion segmentation masks are available.
 Depends:
     fslr (>= 1.5.0)
 Imports:
@@ -37,4 +36,4 @@ Suggests:
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.1.9000
