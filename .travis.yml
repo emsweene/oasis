@@ -5,6 +5,10 @@ sudo: false
 cache: packages
 use_bioc: true
 
+r:
+  - release
+  - devel
+
 notifications:
   email:
     on_success: change
