@@ -17,21 +17,21 @@ oasis_predict(flair, t1, t2, pd = NULL, brain_mask = NULL, model = NULL,
 
 \item{pd}{pd volume of class \code{\link{nifti}}}
 
-\item{brain_mask}{brain mask of class \code{\link{nifti}}, 
-if \code{NULL} a brain mask will be created using \code{\link{fslbet}}.  
-Note that provided brain masks should be in the same space as the T1 volume 
+\item{brain_mask}{brain mask of class \code{\link{nifti}},
+if \code{NULL} a brain mask will be created using \code{\link{fslbet}}.
+Note that provided brain masks should be in the same space as the T1 volume
 if \code{preproc = TRUE}, as all volumes will be registered to this space}
 
 \item{model}{an object of class \code{\link{glm}} used to make the OASIS predictions}
 
-\item{return_preproc}{is a logical value that indicates whether the 
-preprocessed images should be returned, if \code{NULL} 
+\item{return_preproc}{is a logical value that indicates whether the
+preprocessed images should be returned, if \code{NULL}
 then the model from the OASIS paper will be used}
 
-\item{binary}{logical indicating whether a binary map 
+\item{binary}{logical indicating whether a binary map
 should be returned by thresholding the probability map}
 
-\item{threshold}{numeric indicating the threshold value 
+\item{threshold}{numeric indicating the threshold value
 for the probability map, with default of 0.16 for the OASIS paper}
 
 \item{verbose}{print diagnostic messages}
@@ -39,7 +39,7 @@ for the probability map, with default of 0.16 for the OASIS paper}
 \item{...}{options passed to \code{\link{oasis_train_dataframe}}}
 }
 \value{
-A list of volumes: 
+A list of volumes:
 the OASIS probability map, the preprocessed volumes (if \code{return_preproc = TRUE}),
 the brain mask for the subject, the voxel selection mask, and a thresholded,
 binary mask (if \code{binary = TRUE}) .
@@ -49,11 +49,11 @@ This function creates the OASIS probability map from a single MRI study with FLA
 }
 \examples{
 \dontrun{
-library(fslr)
-flair <- readnii('path/to/flair', reorient = FALSE) 
-t2 <- readnii('path/to/t2', reorient = FALSE) 
-t1 <- readnii('path/to/t1', reorient = FALSE) 
-pd <- readnii('path/to/pd', reorient = FALSE) 
+library(neurobase)
+flair <- readnii('path/to/flair', reorient = FALSE)
+t2 <- readnii('path/to/t2', reorient = FALSE)
+t1 <- readnii('path/to/t1', reorient = FALSE)
+pd <- readnii('path/to/pd', reorient = FALSE)
 oasis_map <- oasis_predict(flair = flair, t1 = t1, t2 = t2, pd = pd) }
 }
 

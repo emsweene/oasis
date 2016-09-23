@@ -11,25 +11,27 @@ voxel_selection(flair, brain_mask, cutoff)
 
 \item{brain_mask}{brain mask of class \code{\link{nifti}}}
 
-\item{cutoff}{the percentile cutoff for the thresholding, 
+\item{cutoff}{the percentile cutoff for the thresholding,
 passed to \code{\link{quantile}}}
 }
 \value{
 Returns the voxel selection mask as an object of class \code{\link{nifti}}.
 }
 \description{
-This function creates a binary mask for the voxel selection 
+This function creates a binary mask for the voxel selection
 procedure for OASIS.
 }
 \examples{
+library(neurobase)
+library(fslr)
 library(oasis)
 niis = tempfile(fileext = ".nii.gz")
 if (require(downloader)) {
- download(paste0("https://dl.dropbox.com/u/2785709/brainder", 
-         "/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz"), 
+ download(paste0("https://dl.dropbox.com/u/2785709/brainder",
+         "/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz"),
          destfile = niis)
- 
- flair <- readnii(niis) 
+
+ flair <- readnii(niis)
  if (have.fsl()) {
    brain_mask = fslbet(niis) > 0
  } else {
@@ -40,8 +42,8 @@ if (require(downloader)) {
    eg = as.matrix(eg)
    brain_mask[eg] = 1
  }
- voxel_selection_mask <- voxel_selection(flair, 
-   brain_mask, cutoff = .85) 
+ voxel_selection_mask <- voxel_selection(flair,
+   brain_mask, cutoff = .85)
 }
 }
 

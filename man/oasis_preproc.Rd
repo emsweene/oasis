@@ -20,28 +20,29 @@ oasis_preproc(flair, t1, t2, pd = NULL, brain_mask = NULL, verbose = TRUE,
 
 \item{verbose}{a logical value for printing diagnostic output}
 
-\item{cores}{numeric indicating the number of cores to be used (no more than 4 is useful for this software implementation)}
+\item{cores}{numeric indicating the number of cores to be used 
+(no more than 4 is useful for this software implementation)}
 }
 \value{
-Returns a list of objects of class \code{\link{nifti}}, 
-namely the inhomogeneity corrected FLAIR, T1, T2, and PD registered to the 
+Returns a list of objects of class \code{\link{nifti}},
+namely the inhomogeneity corrected FLAIR, T1, T2, and PD registered to the
 space of the T1 volume.
 }
 \description{
-This function does the required preprocessing for OASIS for the FLAIR, T2, 
-T1, and PD volumes using FSL through \code{fslr}.  
-The preprocessing steps are 
+This function does the required preprocessing for OASIS for the FLAIR, T2,
+T1, and PD volumes using FSL through \code{fslr}.
+The preprocessing steps are
 (1) inhomogeneity correct using \code{\link{fsl_biascorrect}}
 and (2) rigid registration using \code{\link{flirt}} to the T1 space.
 }
 \examples{
 \dontrun{
-library(fslr)
-flair <- readnii('path/to/flair', reorient = FALSE) 
-t1 <- readnii('path/to/t1', reorient = FALSE) 
-t2 <- readnii('path/to/t2', reorient = FALSE) 
+library(neurobase)
+flair <- readnii('path/to/flair', reorient = FALSE)
+t1 <- readnii('path/to/t1', reorient = FALSE)
+t2 <- readnii('path/to/t2', reorient = FALSE)
 pd <- readnii('path/to/pd', reorient = FALSE)
-oasis_preprocessed_data <- oasis_preproc(flair, t1, t2, pd) 
+oasis_preprocessed_data <- oasis_preproc(flair, t1, t2, pd)
 }
 }
 

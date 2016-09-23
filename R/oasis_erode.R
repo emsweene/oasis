@@ -7,6 +7,8 @@
 #' @return Object of class \code{\link{nifti}}
 #' @export
 #' @importFrom mmand erode shapeKernel
+#' @importFrom neurobase niftiarr zero_pad
+#' @importFrom oro.nifti voxdim
 oasis_erode = function(mask, mm = c(5,5,5)) {
 
   mask = check_nifti(mask)

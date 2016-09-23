@@ -15,14 +15,14 @@ correct_image_dim(image, dim = 3)
 Returns a volume of class \code{\link{nifti}} of desired dimension.
 }
 \description{
-This function takes an image and drops dimensions 
+This function takes an image and drops dimensions
 until the volume is a user specified dimension.
 }
 \examples{
 \dontrun{
-library(fslr)
-flair <- readnii('path/to/flair', reorient = FALSE) 
-flair <- correct_image_dim(flair, dim = 3) 
-} 
+library(neurobase)
+flair <- readnii('path/to/flair', reorient = FALSE)
+flair <- correct_image_dim(flair, dim = 3)
+}
 }
 
