@@ -33,7 +33,8 @@ Imports:
     mmand
 Suggests:
     downloader
-Remotes: muschellij2/neurobase
+Remotes: muschellij2/neurobase,
+    muschellij2/fslr
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
