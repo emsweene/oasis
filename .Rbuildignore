@@ -4,3 +4,6 @@
 ## Ignore travis config file
 ^\.travis\.yml$
 README.md
+
+.*\.nii\.gz
+.*\.nii
