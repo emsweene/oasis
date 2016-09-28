@@ -26,10 +26,11 @@ library(neurobase)
 library(fslr)
 library(oasis)
 niis = tempfile(fileext = ".nii.gz")
-if (require(downloader)) {
- download(paste0("https://dl.dropbox.com/u/2785709/brainder",
-         "/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz"),
-         destfile = niis)
+if (require(httr)) {
+   url = paste0("https://dl.dropbox.com/u/2785709/brainder",
+   "/software/flair/templates/GG-853-FLAIR-2.0mm.nii.gz")
+   req <- httr::GET(url,
+   httr::write_disk(path = niis))
 
  flair <- readnii(niis)
  if (have.fsl()) {

@@ -32,7 +32,7 @@ Imports:
     oro.nifti,
     mmand
 Suggests:
-    downloader
+    httr
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
