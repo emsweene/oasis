@@ -14,8 +14,9 @@ Authors@R: c(person(given = "Elizabeth M.", "Sweeney",
 Maintainer: Elizabeth M. Sweeney <emsweene@jhsph.edu>
 Description: Trains and makes predictions from the OASIS method, described in
     detail in the paper "OASIS is Automated Statistical Inference for Segmentation,
-    with applications to multiple sclerosis lesion segmentation in MRI" <doi:
-    10.1016/j.nicl.2013.03.002>. OASIS is a method for multiple sclerosis (MS)
+    with applications to multiple sclerosis lesion segmentation in MRI" 
+    <doi:10.1016/j.nicl.2013.03.002>. 
+    OASIS is a method for multiple sclerosis (MS)
     lesion segmentation on structural magnetic resonance image (MRI) studies. OASIS
     creates probability maps of lesion presence using the FLAIR, T2, T1, and PD
     structural MRI volumes. This packages allows for training of the OASIS model
