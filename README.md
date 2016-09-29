@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/muschellij2/oasis.svg?branch=master)](https://travis-ci.org/muschellij2/oasis)
+[![Build Status](https://travis-ci.org/emsweene/oasis.svg?branch=master)](https://travis-ci.org/emsweene/oasis)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
 
