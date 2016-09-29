@@ -10,6 +10,8 @@ r:
   - release
   - devel
 
+r_check_args: --as-cran
+
 notifications:
   email:
     on_success: change
