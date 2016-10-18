@@ -39,7 +39,6 @@ oasis_preproc <- function(flair, #flair volume of class nifti
 
 
   study <- list(flair = flair, t1 = t1, t2 = t2, pd = pd)
-  # study = check_nifti(study)
 
   # REMOVE NULL
   nulls = sapply(study, is.null)
@@ -70,8 +69,10 @@ oasis_preproc <- function(flair, #flair volume of class nifti
   brain_mask = check_nifti(brain_mask)
   brain_mask <- brain_mask > 0
   brain_mask <- datatyper(brain_mask, trybyte = TRUE)
-
-  study <- mclapply(study, mask_img, mask = brain_mask)
+  
+  study = check_nifti(study)
+  study <- mclapply(study, mask_img, mask = brain_mask, 
+                    mc.cores = cores)
 
   ## inhomogeneity correction for all four modalities using fsl bias correct
   if (verbose) {
