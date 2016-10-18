@@ -55,7 +55,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
                             ...)
 
   oasis_dataframe = L$oasis_dataframe
-  brain_mask = L$oasis_dataframe
+  brain_mask = L$brain_mask
   top_voxels = L$top_voxels
   preproc = L$preproc
   rm(list = "L")
