@@ -58,7 +58,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
 
   oasis_dataframe = L$oasis_dataframe
   brain_mask = L$brain_mask
-  top_voxels = L$top_voxels
+  voxel_selection = L$voxel_selection
   preproc = L$preproc
   rm(list = "L")
 
@@ -80,7 +80,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
 
   ##put the predictions onto the brain
   predictions_nifti <- niftiarr(brain_mask, 0)
-  predictions_nifti[top_voxels == 1] <- predictions
+  predictions_nifti[voxel_selection == 1] <- predictions
   predictions_nifti = datatyper(predictions_nifti, 
                                 datatype = convert.datatype()$FLOAT32,
                                 bitpix = convert.bitpix()$FLOAT32
@@ -109,7 +109,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
            t1 = preproc$t1, t2 = preproc$t2,
            pd = preproc$pd,
            brain_mask = brain_mask,
-           voxel_selection = top_voxels)
+           voxel_selection = voxel_selection)
   
   if (!return_preproc) {
     L$flair = L$t1 = L$t2 = L$pd = NULL
