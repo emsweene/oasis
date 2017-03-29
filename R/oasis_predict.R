@@ -83,7 +83,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   predictions_nifti[top_voxels == 1] <- predictions
   predictions_nifti = datatyper(predictions_nifti, 
                                 datatype = convert.datatype()$FLOAT32,
-                                datatype = convert.bitpix()$FLOAT32
+                                bitpix = convert.bitpix()$FLOAT32
                                 )
   if (verbose) {
     message("Smoothing Prediction")
