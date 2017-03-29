@@ -33,6 +33,8 @@
 #' @export
 #' @importFrom stats predict
 #' @importFrom fslr fslsmooth
+#' @importFrom neurobase datatyper
+#' @importFrom oro.nifti convert.bitpix convert.datatype
 oasis_predict <- function(flair, ##flair volume of class nifti
                           t1, ##t1 volume of class nifti
                           t2, ##t2 volume of class nifti
@@ -79,7 +81,10 @@ oasis_predict <- function(flair, ##flair volume of class nifti
   ##put the predictions onto the brain
   predictions_nifti <- niftiarr(brain_mask, 0)
   predictions_nifti[top_voxels == 1] <- predictions
-
+  predictions_nifti = datatyper(predictions_nifti, 
+                                datatype = convert.datatype()$FLOAT32,
+                                datatype = convert.bitpix()$FLOAT32
+                                )
   if (verbose) {
     message("Smoothing Prediction")
   }
@@ -105,6 +110,7 @@ oasis_predict <- function(flair, ##flair volume of class nifti
            pd = preproc$pd,
            brain_mask = brain_mask,
            voxel_selection = top_voxels)
+  
   if (!return_preproc) {
     L$flair = L$t1 = L$t2 = L$pd = NULL
   }

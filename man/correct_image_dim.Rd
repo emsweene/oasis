@@ -25,4 +25,3 @@ flair <- readnii('path/to/flair', reorient = FALSE)
 flair <- correct_image_dim(flair, dim = 3)
 }
 }
-

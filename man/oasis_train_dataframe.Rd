@@ -69,4 +69,3 @@ if they wish to use an alternative normalization method.
 \seealso{
 \code{\link{oasis_training}}
 }
-

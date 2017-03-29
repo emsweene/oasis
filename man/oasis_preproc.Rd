@@ -45,4 +45,3 @@ pd <- readnii('path/to/pd', reorient = FALSE)
 oasis_preprocessed_data <- oasis_preproc(flair, t1, t2, pd)
 }
 }
-

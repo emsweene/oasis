@@ -12,4 +12,3 @@ oasis_model
 A \code{glm} object containing the OASIS model from the OASIS paper.
 }
 \keyword{datasets}
-

@@ -47,4 +47,3 @@ if (require(httr)) {
    brain_mask, cutoff = .85)
 }
 }
-

@@ -18,4 +18,3 @@ Object of class \code{\link{nifti}}
 An alternative to using \code{fslerode} for mask erosion of a 
 brain mask by a box kernel defined by millimeter
 }
-

@@ -56,4 +56,3 @@ t1 <- readnii('path/to/t1', reorient = FALSE)
 pd <- readnii('path/to/pd', reorient = FALSE)
 oasis_map <- oasis_predict(flair = flair, t1 = t1, t2 = t2, pd = pd) }
 }
-
