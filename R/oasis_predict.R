@@ -32,7 +32,7 @@
 #' oasis_map <- oasis_predict(flair = flair, t1 = t1, t2 = t2, pd = pd) }
 #' @export
 #' @importFrom stats predict
-#' @importFrom fslr fslsmooth
+#' @importFrom fslr fslsmooth fsl_smooth
 #' @importFrom neurobase datatyper
 #' @importFrom oro.nifti convert.bitpix convert.datatype
 oasis_predict <- function(flair, ##flair volume of class nifti
