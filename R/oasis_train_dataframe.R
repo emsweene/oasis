@@ -179,12 +179,19 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   cnames = toupper(names(orig_study))
   names(oasis_study) = cnames
 
+  # New 2017May03
+  smoothed_mask = fslr::fsl_smooth(
+    file = brain_mask,
+    sigma = 10,
+    smooth_mask = FALSE)
+  
   ## smooth the images using fslsmooth from the fslr package
   smooth <- mclapply(orig_study, fslsmooth,
                      sigma = 10,
                      mask = brain_mask,
                      retimg = TRUE,
                      smooth_mask = TRUE,
+                     smoothed_mask = smoothed_mask,
                      mc.cores = cores)
   names(smooth) = paste0(cnames, "_10")
   oasis_study = c(oasis_study, smooth)
@@ -192,11 +199,18 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   if (verbose) {
     message("Smoothing Images: Sigma = 20")
   }
+  
+  # New 2017May03
+  smoothed_mask = fslr::fsl_smooth(
+    file = brain_mask,
+    sigma = 20,
+    smooth_mask = FALSE)  
   smooth <- mclapply(orig_study, fslsmooth,
                      sigma = 20,
                      mask = brain_mask,
                      retimg = TRUE,
                      smooth_mask = TRUE,
+                     smoothed_mask = smoothed_mask,
                      mc.cores = cores)
   names(smooth) = paste0(cnames, "_20")
   oasis_study = c(oasis_study, smooth)
