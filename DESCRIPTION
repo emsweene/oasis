@@ -38,4 +38,5 @@ License: GPL-2
 LazyLoad: yes
 LazyData: yes
 RoxygenNote: 6.0.1.9000
-Remotes: muschellij2/neurobase,muschellij2/fslr
+Encoding: UTF-8
+Remotes: muschellij2/neurobase, muschellij2/fslr

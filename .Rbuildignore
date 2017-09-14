@@ -4,7 +4,6 @@
 ## Ignore travis config file
 ^\.travis\.yml$
 README.md
-
 .*\.nii\.gz
 .*\.nii
 icon\.ai
@@ -12,3 +11,4 @@ icon\.psd
 icon\.png
 sticker\.R
 sticker\.png
+^docs$
