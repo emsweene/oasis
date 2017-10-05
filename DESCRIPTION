@@ -3,7 +3,7 @@ Type: Package
 Title: Multiple Sclerosis Lesion Segmentation using Magnetic Resonance Imaging
     (MRI)
 Version: 2.5.1
-Date: 2017-05-03
+Date: 2017-10-05
 Authors@R: c(person(given = "Elizabeth M.", "Sweeney",  
   email = "emsweene@jhsph.edu", role = c("aut", "cre")), 
   person(given = "John", family = "Muschelli", email = "muschellij2@gmail.com", 
@@ -40,3 +40,4 @@ LazyData: yes
 RoxygenNote: 6.0.1.9000
 Encoding: UTF-8
 Remotes: muschellij2/neurobase, muschellij2/fslr
+
