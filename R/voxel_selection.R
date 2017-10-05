@@ -16,6 +16,7 @@
 #'    "flair/templates/GG-853-FLAIR-2.0mm.nii.gz")
 #'    req <- httr::GET(url,
 #'    httr::write_disk(path = niis))
+#'    httr::stop_for_status(req)
 #'
 #'  flair <- readnii(niis)
 #'  if (have.fsl()) {
