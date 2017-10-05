@@ -5,6 +5,7 @@ sudo: false
 cache: packages
 use_bioc: true
 bioc_required: true
+warnings_are_errors: true
 
 r:
   - release
@@ -16,3 +17,6 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+  after_success:
+    - Rscript -e 'covr::coveralls(type = "all")'

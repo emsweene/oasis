@@ -32,12 +32,12 @@ Imports:
     parallel,
     oro.nifti,
     mmand
-Suggests:
-    httr
+Suggests: 
+    httr,
+    covr
 License: GPL-2
 LazyLoad: yes
 LazyData: yes
 RoxygenNote: 6.0.1.9000
 Encoding: UTF-8
 Remotes: muschellij2/neurobase, muschellij2/fslr
-

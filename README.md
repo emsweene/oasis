@@ -3,6 +3,8 @@
 
 
 [![Build Status](https://travis-ci.org/emsweene/oasis.svg?branch=master)](https://travis-ci.org/emsweene/oasis)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/oasis?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/oasis)
+[![Coverage status](https://coveralls.io/repos/github/muschellij2/oasis/badge.svg)](https://coveralls.io/r/muschellij2/oasis?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
 
@@ -13,3 +15,4 @@ oasis is an R package based on the paper: [OASIS is Automated Statistical Infere
 
 
 Logo downloaded from https://www.vecteezy.com/nature/54483-palm-tree-vector-free-vector-of-the-day-252
+

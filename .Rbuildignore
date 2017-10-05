@@ -12,3 +12,4 @@ icon\.png
 sticker\.R
 sticker\.png
 ^docs$
+^appveyor\.yml$
