@@ -1,18 +1,22 @@
 
-![Sticker](sticker.png)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+OASIS is Automated Statistical Inference for Segmentation
+=========================================================
 
+<img src="sticker.png" width="100">
 
-[![Build Status](https://travis-ci.org/emsweene/oasis.svg?branch=master)](https://travis-ci.org/emsweene/oasis)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/oasis?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/oasis)
-[![Coverage status](https://coveralls.io/repos/github/muschellij2/oasis/badge.svg)](https://coveralls.io/r/muschellij2/oasis?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
+[![Build Status](https://travis-ci.org/emsweene/oasis.svg?branch=master)](https://travis-ci.org/emsweene/oasis) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/oasis?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/oasis) [![Coverage status](https://coveralls.io/repos/github/muschellij2/oasis/badge.svg)](https://coveralls.io/r/muschellij2/oasis?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/oasis)](http://cran.rstudio.com/web/packages/oasis/index.html)
 
+oasis is an R package based on the paper: [OASIS is Automated Statistical Inference for Segmentation, with applications to multiple sclerosis lesion segmentation in MRI](http://dx.doi.org/10.1016/j.nicl.2013.03.002) by Sweeney et al. This package implements the model and the processing stream, which is based in FSL, that is ported to R through [fslr](https://journal.r-project.org/archive/2015-1/muschelli-sweeney-lindquist-etal.pdf).
 
-oasis is an R package based on the paper: [OASIS is Automated Statistical Inference for Segmentation, with applications to multiple sclerosis lesion segmentation in MRI](http://dx.doi.org/10.1016/j.nicl.2013.03.002) by Sweeney et al.  This package implements the model and the processing stream, which is based in FSL, that is ported to R through [fslr](https://journal.r-project.org/archive/2015-1/muschelli-sweeney-lindquist-etal.pdf).
+Installation
+------------
 
+You can install oasis from github with:
 
+``` r
+# install.packages("devtools")
+devtools::install_github("muschellij2/oasis")
+```
 
-
-Logo downloaded from https://www.vecteezy.com/nature/54483-palm-tree-vector-free-vector-of-the-day-252
-
+Logo downloaded from <https://www.vecteezy.com/nature/54483-palm-tree-vector-free-vector-of-the-day-252>
