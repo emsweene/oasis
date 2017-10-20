@@ -29,6 +29,7 @@
 #' the preprocessed images should be returned
 #' @param cores numeric indicating the number of cores to be used
 #' (no more than 4 is useful for this software implementation)
+#' @param sigma Sigmas used to smooth the data, default is 10,20
 #' @param verbose print diagnostic output
 #' @param eroder Should \code{\link{fslerode}} or \code{\link{oasis_erode}} be used
 #'
@@ -42,20 +43,22 @@
 #' @export
 #' @importFrom neurobase zscore_img
 #' @importFrom fslr fslbet fslerode
-oasis_train_dataframe <- function(flair, ##flair volume of class nifti
-                                  t1, ##t1 volume of class nifti
-                                  t2, ##t2 volume of class nifti
-                                  pd = NULL, ##pd volume of class nifti
-                                  gold_standard = NULL, ##gold standard mask of class nifti
-                                  brain_mask = NULL, ##brain mask of class nifti
-                                  preproc = FALSE, ##option to preprocess the data
-                                  normalize = TRUE, ##option to normalize
-                                  slices = NULL, #slice vector
-                                  orientation = c("axial", "coronal", "sagittal"),
-                                  return_preproc = FALSE,
-                                  cores = 1,
-                                  verbose = TRUE,
-                                  eroder = c("fsl", "oasis")
+oasis_train_dataframe <- function(
+  flair, ##flair volume of class nifti
+  t1, ##t1 volume of class nifti
+  t2, ##t2 volume of class nifti
+  pd = NULL, ##pd volume of class nifti
+  gold_standard = NULL, ##gold standard mask of class nifti
+  brain_mask = NULL, ##brain mask of class nifti
+  preproc = FALSE, ##option to preprocess the data
+  normalize = TRUE, ##option to normalize
+  slices = NULL, #slice vector
+  orientation = c("axial", "coronal", "sagittal"),
+  return_preproc = FALSE,
+  cores = 1,
+  sigma = c(10, 20),
+  verbose = TRUE,
+  eroder = c("fsl", "oasis")
 )
 {
   if (verbose) {
@@ -72,7 +75,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   t1 = check_nifti2(t1)
   t2 = check_nifti2(t2)
   pd = check_nifti2(pd)
-
+  
   correct_image_dim2 = function(x) {
     if (is.null(x)) {
       return(NULL)
@@ -85,7 +88,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   t1 <- correct_image_dim2(t1)
   t2 <- correct_image_dim2(t2)
   pd <- correct_image_dim2(pd)
-
+  
   ##image preproceesing
   if (preproc == TRUE) {
     if (verbose) {
@@ -108,7 +111,7 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   # REMOVE NULL
   nulls = sapply(oasis_study, is.null)
   oasis_study = oasis_study[!nulls]
-
+  
   ###############################
   # Making brain mask if one not needed
   ###############################
@@ -119,12 +122,12 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     ## create a brain mask if not supplied
     brain_mask <- fslbet(infile = oasis_study$t1, retimg = TRUE)
   }
-
+  
   brain_mask = check_nifti(brain_mask)
   brain_mask <- brain_mask > 0
   brain_mask <- datatyper(brain_mask, trybyte = TRUE)
-
-
+  
+  
   ##adjust brain mask for OASIS
   brain_mask <- correct_image_dim(brain_mask)
   if (verbose) {
@@ -140,17 +143,17 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
     ero_brain_mask <- oasis_erode(mask = brain_mask,
                                   mm = c(5,5,5))
   }
-
+  
   ##removing voxels below 15th quantile
   brain_mask <- voxel_selection(flair = oasis_study$flair,
                                 brain_mask = ero_brain_mask,
                                 cutoff = .15)
-
+  
   # cutpoint <- quantile(oasis_study$flair[brain_mask == 1], probs = .15)
   # brain_mask[oasis_study$flair <= cutpoint] <- 0
-
-
-
+  
+  
+  
   ## the image normalization
   if (normalize == TRUE) {
     if (verbose) {
@@ -160,8 +163,8 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
                           mask = brain_mask,
                           margin = NULL)
   }
-
-
+  
+  
   if (verbose) {
     message("Voxel Selection Procedure")
   }
@@ -169,68 +172,53 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   top_voxels <- voxel_selection(flair = oasis_study$flair,
                                 brain_mask = brain_mask,
                                 cutoff = .85)
-
-
-
-  if (verbose) {
-    message("Smoothing Images: Sigma = 10")
-  }
+  
+  
   orig_study = oasis_study
   cnames = toupper(names(orig_study))
   names(oasis_study) = cnames
-
-  # New 2017May03
-  smoothed_mask = fslr::fsl_smooth(
-    file = brain_mask,
-    sigma = 10,
-    smooth_mask = FALSE)
   
-  ## smooth the images using fslsmooth from the fslr package
-  smooth <- mclapply(orig_study, fslsmooth,
-                     sigma = 10,
-                     mask = brain_mask,
-                     retimg = TRUE,
-                     smooth_mask = TRUE,
-                     smoothed_mask = smoothed_mask,
-                     mc.cores = cores)
-  names(smooth) = paste0(cnames, "_10")
-  oasis_study = c(oasis_study, smooth)
-
-  if (verbose) {
-    message("Smoothing Images: Sigma = 20")
+  if (length(sigma) > 0) {
+    for (isigma in sigma) {
+      if (verbose) {
+        message(paste0("Smoothing Images: Sigma = ", isigma))
+      }
+      
+      
+      # New 2017May03
+      smoothed_mask = fslr::fsl_smooth(
+        file = brain_mask,
+        sigma = isigma,
+        smooth_mask = FALSE)
+      
+      ## smooth the images using fslsmooth from the fslr package
+      smooth <- mclapply(orig_study, fslsmooth,
+                         sigma = isigma,
+                         mask = brain_mask,
+                         retimg = TRUE,
+                         smooth_mask = TRUE,
+                         smoothed_mask = smoothed_mask,
+                         mc.cores = cores)
+      names(smooth) = paste0(cnames, "_", isigma)
+      oasis_study = c(oasis_study, smooth)
+      rm(list = c("smooth"))
+    }
   }
   
-  # New 2017May03
-  smoothed_mask = fslr::fsl_smooth(
-    file = brain_mask,
-    sigma = 20,
-    smooth_mask = FALSE)  
-  smooth <- mclapply(orig_study, fslsmooth,
-                     sigma = 20,
-                     mask = brain_mask,
-                     retimg = TRUE,
-                     smooth_mask = TRUE,
-                     smoothed_mask = smoothed_mask,
-                     mc.cores = cores)
-  names(smooth) = paste0(cnames, "_20")
-  oasis_study = c(oasis_study, smooth)
-
-  rm(list = c("smooth"))
-
   gold_standard = check_nifti2(gold_standard)
   gold_standard = correct_image_dim2(gold_standard)
-
+  
   oasis_study$GoldStandard <- gold_standard
-
+  
   oasis_study$top_voxels <- top_voxels
-
+  
   #######################################
   # Make data.frame
   #######################################
   oasis_dataframe = lapply(oasis_study, c)
   oasis_dataframe = as.data.frame(oasis_dataframe)
   rownames(oasis_dataframe) = NULL
-
+  
   ######################
   # Adding in slice indicators
   ######################
@@ -239,26 +227,26 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
   orientations = c("axial", "coronal", "sagittal")
   colnames(inds) = orientations
   oasis_dataframe = cbind(oasis_dataframe, inds)
-
+  
   ######################
   # Keeping Voxel Selection
   ######################
   oasis_dataframe = oasis_dataframe[ oasis_dataframe$top_voxels == 1, ]
   oasis_dataframe$top_voxels = NULL
-
+  
   ######################
   # Keep only the slices indicated if slices aren't NULL
   ######################
   if (!is.null(slices)) {
     orientation = match.arg(orientation)
-
+    
     oasis_dataframe = oasis_dataframe[
       oasis_dataframe[, orientation] %in% slices, ]
   }
   cn = colnames(oasis_dataframe)
   cn = setdiff(cn, orientations)
   oasis_dataframe = oasis_dataframe[, cn]
-
+  
   ######################
   # Return Preproc
   ######################
@@ -270,6 +258,6 @@ oasis_train_dataframe <- function(flair, ##flair volume of class nifti
            voxel_selection = top_voxels,
            ero_brain_mask = ero_brain_mask)
   L$preproc = orig_study
-
+  
   return(L)
 }

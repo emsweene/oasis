@@ -7,7 +7,8 @@
 oasis_train_dataframe(flair, t1, t2, pd = NULL, gold_standard = NULL,
   brain_mask = NULL, preproc = FALSE, normalize = TRUE, slices = NULL,
   orientation = c("axial", "coronal", "sagittal"), return_preproc = FALSE,
-  cores = 1, verbose = TRUE, eroder = c("fsl", "oasis"))
+  cores = 1, sigma = c(10, 20), verbose = TRUE, eroder = c("fsl",
+  "oasis"))
 }
 \arguments{
 \item{flair}{FLAIR volume of class \code{\link{nifti}}}
@@ -45,6 +46,8 @@ the preprocessed images should be returned}
 
 \item{cores}{numeric indicating the number of cores to be used
 (no more than 4 is useful for this software implementation)}
+
+\item{sigma}{Sigmas used to smooth the data, default is 10,20}
 
 \item{verbose}{print diagnostic output}
 
