@@ -11,7 +11,6 @@ Authors@R: c(person(given = "Elizabeth M.", "Sweeney",
   person(  given = "R. Taki", family = "Shinohara", 
   email = "rshi@mail.med.upenn.edu", 
   role = c("aut")))
-Maintainer: Elizabeth M. Sweeney <emsweene@jhsph.edu>
 Description: Trains and makes predictions from the OASIS method, described in
     detail in the paper "OASIS is Automated Statistical Inference for Segmentation,
     with applications to multiple sclerosis lesion segmentation in MRI" 
@@ -41,4 +40,3 @@ LazyLoad: yes
 LazyData: yes
 RoxygenNote: 6.0.1.9000
 Encoding: UTF-8
-Remotes: muschellij2/neurobase, muschellij2/fslr
