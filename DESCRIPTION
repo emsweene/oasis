@@ -2,10 +2,10 @@ Package: oasis
 Type: Package
 Title: Multiple Sclerosis Lesion Segmentation using Magnetic Resonance Imaging
     (MRI)
-Version: 3.0
+Version: 3.0.0
 Date: 2018-01-26
 Authors@R: c(person(given = "Elizabeth M.", "Sweeney",  
-  email = "emsweene@jhsph.edu", role = c("aut", "cre")), 
+  email = "elizabethmargaretsweeney@gmail.com", role = c("aut", "cre")), 
   person(given = "John", family = "Muschelli", email = "muschellij2@gmail.com", 
   role = c("aut")), 
   person(  given = "R. Taki", family = "Shinohara", 
@@ -24,6 +24,7 @@ Description: Trains and makes predictions from the OASIS method, described in
     studies that have a gold standard lesion segmentation masks. The package will
     also create OASIS probability maps for MRI studies using the OASIS model from
     the OASIS paper if no gold standard lesion segmentation masks are available.
+Depends: R (>= 2.1.0)
 Imports: 
     neurobase,
     fslr (>= 2.13),
