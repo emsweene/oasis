@@ -4,4 +4,6 @@
 
 * The original model from the paper is located at: `original_oasis_model`.
 
+* Adding package back to CRAN after archiving.
+
 * Added a `NEWS.md` file to track changes to the package.
