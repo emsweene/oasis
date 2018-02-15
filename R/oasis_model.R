@@ -25,3 +25,13 @@
 #' @docType data
 #' @format A \code{glm} object 
 "nopd_oasis_model"
+
+
+#' @title Example \code{data.frame} of MS voxels
+#'
+#' @description A \code{data.frame} of MS voxels for OASIS prediction
+#' @name example_oasis_df
+#' @docType data
+#' @format A \code{data.frame} with 100 rows and 13 columns, corresponding to the
+#' predictors of the OASIS model.
+"example_oasis_df"

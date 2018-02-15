@@ -10,9 +10,10 @@
 #' @export
 #' @return Returns a \code{glm} object containing the trained OASIS
 #' coefficients to be used by the function \code{\link{oasis_predict}}.
-#' @examples \dontrun{
-#' my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)
-#' }
+#' @examples 
+#' df = oasis::example_oasis_df
+#' df$GoldStandard = df$GOLD_Lesions
+#' oasis_training(df)
 #' @importFrom stats glm binomial
 oasis_training <- function(..., ##dataframes from function
                            formula = GoldStandard ~ FLAIR_10 *FLAIR  +

@@ -10,3 +10,5 @@
 * This is a new release.
 
 * Adding package back to CRAN after archiving with new email and changes.
+
+* Added more examples to run

@@ -9,6 +9,21 @@
 #' @importFrom mmand erode shapeKernel
 #' @importFrom neurobase niftiarr zero_pad
 #' @importFrom oro.nifti voxdim
+#' @examples
+#' library(neurobase)
+#' library(fslr)
+#' library(oasis)
+#' niis = tempfile(fileext = ".nii.gz")
+#' if (require(httr)) {
+#'    url = paste0("https://s3.us-east-2.amazonaws.com/brainder/software/",
+#'    "flair/templates/GG-853-FLAIR-2.0mm.nii.gz")
+#'    req <- httr::GET(url,
+#'    httr::write_disk(path = niis))
+#'    httr::stop_for_status(req)
+#'
+#'  flair <- readnii(niis)
+#'  res = oasis_erode(flair > 0)
+#' }
 oasis_erode = function(mask, mm = c(5,5,5)) {
 
   mask = check_nifti(mask)

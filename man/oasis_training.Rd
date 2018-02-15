@@ -27,7 +27,7 @@ produced by an element from the output of the
 function \code{\link{oasis_train_dataframe}}
 }
 \examples{
-\dontrun{
-my_oasis_model <- oasis_training(oasis_dataframe_1, oasis_dataframe_2)
-}
+df = oasis::example_oasis_df
+df$GoldStandard = df$GOLD_Lesions
+oasis_training(df)
 }
